@@ -1,0 +1,46 @@
+{
+  "name": "@t4/api",
+  "version": "2.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "scripts": {
+    "dev-original": "wrangler dev --ip 0.0.0.0",
+    "dev": "wrangler dev --ip 0.0.0.0 src/worker.ts",
+    "generate": "drizzle-kit generate",
+    "migrate": "wrangler d1 migrations apply lucia",
+    "migrate:local": "wrangler d1 migrations apply lucia --local",
+    "seed": "wrangler d1 execute lucia --file=./seed/seed.sql",
+    "seed:local": "wrangler d1 execute lucia --local --file=./seed/seed.sql",
+    "studio": "drizzle-kit studio",
+    "sql:local": "wrangler d1 execute lucia --local --command",
+    "deploy": "wrangler deploy --minify src/worker.ts",
+    "postinstall": "bun generate",
+    "clean": "rm -rf .turbo node_modules"
+  },
+  "dependencies": {
+    "@cloudflare/workers-wasi": "^0.0.5",
+    "@hono/trpc-server": "^0.3.1",
+    "@libsql/client": "^0.6.0",
+    "@lucia-auth/adapter-drizzle": "1.0.7",
+    "@trpc/server": "^10.45.2",
+    "arctic": "1.9.0",
+    "drizzle-orm": "^0.30.10",
+    "drizzle-valibot": "^0.2.0",
+    "hono": "^4.3.11",
+    "lodash": "^4.17.21",
+    "lucia": "3.2.0",
+    "miniflare": "3.20240512.0",
+    "oslo": "1.2.0",
+    "superjson": "2.2.1",
+    "ts-pattern": "^5.1.2",
+    "valibot": "^0.30.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240512.0",
+    "@types/lodash": "^4.17.4",
+    "bun-types": "^1.1.10",
+    "drizzle-kit": "^0.21.4",
+    "typescript": "^5.4.5",
+    "wrangler": "^3.57.1"
+  }
+}
