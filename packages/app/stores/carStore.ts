@@ -1,30 +1,26 @@
 // stores/carStore.js
 import { observable } from '@legendapp/state'
 import { syncedCrud } from '@legendapp/state/sync-plugins/crud'
-import { createId } from '@paralleldrive/cuid2'
 import type { Car } from '@t4/api/src/db/schema'
-import { trpc, client } from 'app/utils/trpc'
-
-// Define the type of the car data
-// export type Car = {
-//   updatedAt: string | null
-//   id: string
-//   createdAt: string | null
-//   make: string
-//   model: string
-//   year: number
-//   color: string
-//   price: number
-//   mileage: number
-//   fuelType: string
-//   transmission: string
-// }
+import { client } from 'app/utils/trpc'
 
 export const cars$ = observable<Car[]>(
   syncedCrud<Car, Car[]>({
     // generateId: () => createId(),
     mode: 'merge',
     // as: 'array',
+    changesSince: 'last-sync',
+    fieldCreatedAt: 'createdAt',
+    fieldUpdatedAt: 'updatedAt',
+    persist: {
+      name: 'cars',
+      retrySync: true,
+    },
+    debounceSet: 500,
+    retry: {
+      infinite: true,
+      backoff: 'exponential',
+    },
 
     list: async () => {
       const data = await client.car.list.query()
@@ -60,12 +56,6 @@ export const cars$ = observable<Car[]>(
         console.log('error', error)
         throw error
       }
-    },
-    changesSince: 'last-sync',
-    fieldCreatedAt: 'createdAt',
-    fieldUpdatedAt: 'updatedAt',
-    persist: {
-      name: 'cars',
     },
   })
 )

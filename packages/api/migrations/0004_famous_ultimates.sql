@@ -11,30 +11,11 @@ CREATE TABLE `AuthMethod` (
 	FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE TABLE `Car` (
-	`id` text PRIMARY KEY NOT NULL,
-	`make` text NOT NULL,
-	`model` text NOT NULL,
-	`year` integer NOT NULL,
-	`color` text NOT NULL,
-	`price` real NOT NULL,
-	`mileage` integer NOT NULL,
-	`fuelType` text NOT NULL,
-	`transmission` text NOT NULL,
-	`created_at` text,
-	`updated_at` text
-);
---> statement-breakpoint
 CREATE TABLE `Session` (
 	`id` text PRIMARY KEY NOT NULL,
 	`user_id` text NOT NULL,
 	`expires_at` integer NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON UPDATE no action ON DELETE no action
-);
---> statement-breakpoint
-CREATE TABLE `User` (
-	`id` text PRIMARY KEY NOT NULL,
-	`email` text NOT NULL
 );
 --> statement-breakpoint
 CREATE INDEX `idx_userKey_userId` ON `AuthMethod` (`user_id`);--> statement-breakpoint
