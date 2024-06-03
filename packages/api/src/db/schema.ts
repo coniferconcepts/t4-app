@@ -1,5 +1,5 @@
-import { InferSelectModel, InferInsertModel, relations, sql } from 'drizzle-orm'
-import { sqliteTable, text, integer, real, index } from 'drizzle-orm/sqlite-core'
+import { type InferInsertModel, type InferSelectModel, relations, sql } from 'drizzle-orm'
+import { index, integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-valibot'
 import { HASH_METHODS } from '../utils/password/hash-methods'
 
@@ -90,6 +90,8 @@ export const CarTable = sqliteTable('Car', {
   mileage: integer('mileage').notNull(),
   fuelType: text('fuelType').notNull(),
   transmission: text('transmission').notNull(),
+  createdAt: text('created_at'),
+  updatedAt: text('updated_at'),
 })
 export type Car = InferSelectModel<typeof CarTable>
 export type InsertCar = InferInsertModel<typeof CarTable>

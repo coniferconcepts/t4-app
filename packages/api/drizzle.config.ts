@@ -1,13 +1,18 @@
-import type { Config } from 'drizzle-kit'
+import { defineConfig } from 'drizzle-kit'
 
-export default {
+export default defineConfig({
+  dialect: 'sqlite',
   schema: './src/db/schema.ts',
-  out: './migrations',
-  driver: 'd1',
+  //driver: 'd1',
   dbCredentials: {
     wranglerConfigPath: 'wrangler.toml',
-    dbName: 'production',
+    dbName: 'lucia --local',
   },
-  verbose: false,
+  out: './migrations',
+  migrations: {
+    table: 'migrations',
+    //schema: 'public',
+  },
+  verbose: true,
   strict: true,
-} satisfies Config
+})
