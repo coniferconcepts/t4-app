@@ -28,7 +28,6 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
     transmission: 'Automatic',
   })
 
-
   function createCar() {
     console.log('createCar')
     const newId = newCar$.get().id
@@ -48,7 +47,7 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
 
     // data needs to have an existing createdAt field to be updated, adding it here
     // since original data doesn't have it populated
-    cars$[firstId].assign({ year: 2015, createdAt: "2024-01-01T00:00:00.000Z" })
+    cars$[firstId].assign({ year: 2015, createdAt: '2024-01-01T00:00:00.000Z' })
   }
 
   return (
