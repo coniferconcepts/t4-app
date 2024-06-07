@@ -1,6 +1,6 @@
 import { observer } from '@legendapp/state/react'
 import { observable } from '@legendapp/state'
-import { H1, H2, Paragraph, YStack } from '@t4/ui'
+import { GetProps, H1, H2, Paragraph, YStack, styled } from '@t4/ui'
 import { cars$ } from 'app/stores/carStore'
 import React from 'react'
 import { For } from '@legendapp/state/react'
@@ -8,9 +8,43 @@ import { createId } from '@paralleldrive/cuid2'
 import { SolitoImage } from 'solito/image'
 import { formatNumber, formatPrice } from '@t4/ui/src/libs/number'
 import type { Car } from '@t4/api/src/db/schema'
+import { useObservable, Reactive, Memo } from '@legendapp/state/react'
+import Form from 'app/components/form/form'
+import { InputPreset } from 'app/components/form/inputPresets'
+import * as v from 'valibot'
 
 // Create a new type with all properties optional
 type PartialCar = Partial<Car>
+
+const customStringSchema = v.pipe(
+  v.string('Custom string must be a string.'),
+  v.nonEmpty('Custom string must not be empty.')
+);
+
+const inputsConfig = [
+  { name: 'userEmail', preset: 'email' },
+  { name: 'userPassword', preset: 'password' },
+  { name: 'userNumber', preset: 'number' },
+  { name: 'customString', schema: customStringSchema, placeholder: 'Custom String', type: 'text' },
+];
+
+const containerStyle = {
+  padding: 20,
+  //backgroundColor: 'red',
+  maxWidth: 400,
+};
+
+const inputStyle = {
+  //backgroundColor: 'blue',
+  padding: 15,
+  marginBottom: 10,
+};
+
+const textStyle = {
+  //color: 'red',
+};
+
+
 
 export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
   const carsList = cars$.get()
@@ -50,6 +84,16 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
     cars$[firstId].assign({ year: 2015, createdAt: '2024-01-01T00:00:00.000Z' })
   }
 
+  const handleFormSubmit = (formData) => {
+    console.log('Form Submitted:', formData);
+  };
+
+
+  // change form to have additional options, display submit button or not
+  // submit function called when items change or when button is pressed
+  // form labels or not
+  // form validation while changing items or when submitting (if not autmatic)
+
   return (
     <YStack>
       <H1>Cars</H1>
@@ -87,6 +131,16 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
       </For>
 
       <H2 onPress={createCar}>Add Car</H2>
+
+      <H2>Reusable Form</H2>
+      <Form
+        inputsConfig={inputsConfig}
+        onSubmit={handleFormSubmit}
+        containerStyle={containerStyle}
+        inputStyle={inputStyle}
+        textStyle={textStyle}
+      />
+
       <H2 onPress={updateCar}>Update Car</H2>
     </YStack>
   )

@@ -32,7 +32,7 @@
     "oslo": "1.2.0",
     "superjson": "1.13.3",
     "ts-pattern": "^5.1.2",
-    "valibot": "^0.30.0"
+    "valibot": "^0.31.0-rc.11"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240529.0",
