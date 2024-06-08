@@ -1,6 +1,6 @@
 import { observer } from '@legendapp/state/react'
 import { observable } from '@legendapp/state'
-import { GetProps, H1, H2, Paragraph, YStack, styled } from '@t4/ui'
+import { Button, GetProps, H1, H2, Paragraph, YStack, styled } from '@t4/ui'
 import { cars$ } from 'app/stores/carStore'
 import React from 'react'
 import { For } from '@legendapp/state/react'
@@ -22,29 +22,37 @@ const customStringSchema = v.pipe(
 );
 
 const inputsConfig = [
-  { name: 'userEmail', preset: 'email' },
-  { name: 'userPassword', preset: 'password' },
-  { name: 'userNumber', preset: 'number' },
-  { name: 'customString', schema: customStringSchema, placeholder: 'Custom String', type: 'text' },
+  { name: 'userEmail', preset: 'email', labelText: 'Email Address' },
+  { name: 'userPassword', preset: 'password', labelText: 'Password' },
+  { name: 'userNumber', preset: 'number', labelText: 'Age' },
+  { name: 'customString', schema: customStringSchema, placeholder: 'Custom String', type: 'text', labelText: 'Custom Field' },
 ];
 
-const containerStyle = {
+const formContainerStyle = {
   padding: 20,
-  //backgroundColor: 'red',
-  maxWidth: 400,
+  backgroundColor: '#f0f0f0',
+};
+
+const inputContainerStyle = {
+  marginBottom: 20,
 };
 
 const inputStyle = {
-  //backgroundColor: 'blue',
+  borderColor: 'green',
   padding: 15,
-  marginBottom: 10,
 };
 
-const textStyle = {
-  //color: 'red',
+const inputTextStyle = {
+  color: 'red',
 };
 
+const inputLabelStyle = {
+  color: 'blue',
+};
 
+const inputErrorStyle = {
+  color: 'orange',
+};
 
 export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
   const carsList = cars$.get()
@@ -84,8 +92,15 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
     cars$[firstId].assign({ year: 2015, createdAt: '2024-01-01T00:00:00.000Z' })
   }
 
+  const submitTrigger$ = observable(false);
+
   const handleFormSubmit = (formData) => {
     console.log('Form Submitted:', formData);
+  };
+
+  const handleCustomSubmit = () => {
+    console.log('Custom submit button clicked');
+    submitTrigger$.set(true);
   };
 
 
@@ -136,11 +151,16 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
       <Form
         inputsConfig={inputsConfig}
         onSubmit={handleFormSubmit}
-        containerStyle={containerStyle}
+        formContainerStyle={formContainerStyle}
+        inputContainerStyle={inputContainerStyle}
         inputStyle={inputStyle}
-        textStyle={textStyle}
+        inputTextStyle={inputTextStyle}
+        inputLabelStyle={inputLabelStyle}
+        inputErrorStyle={inputErrorStyle}
+        submitTrigger$={submitTrigger$}
+        showSubmit={false} // Hide the submit button within the form
       />
-
+      <Button onPress={handleCustomSubmit}>Custom Submit</Button>
       <H2 onPress={updateCar}>Update Car</H2>
     </YStack>
   )

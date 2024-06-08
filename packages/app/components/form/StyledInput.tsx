@@ -1,5 +1,5 @@
 // StyledInput.tsx
-import { Text, GetProps, styled } from 'tamagui';
+import { Text, GetProps, styled, YStack } from 'tamagui';
 import { observer, Reactive } from '@legendapp/state/react';
 import { when } from '@legendapp/state';
 
@@ -24,7 +24,10 @@ interface StyledInputProps extends Omit<TamaguiReactiveInputProps, 'value$'> {
     error$: any;
     validateOnBlur?: (value: any) => string | null;
     inputStyle?: TamaguiReactiveInputProps['style'];
-    textStyle?: TamaguiReactiveInputProps['style'];
+    inputTextStyle?: TamaguiReactiveInputProps['style'];
+    inputLabelStyle?: TamaguiReactiveInputProps['style'];
+    inputErrorStyle?: TamaguiReactiveInputProps['style'];
+    labelText?: string;
 }
 
 const StyledInput = observer(({
@@ -34,7 +37,10 @@ const StyledInput = observer(({
     type = 'text',
     validateOnBlur,
     inputStyle,
-    textStyle,
+    inputTextStyle,
+    inputLabelStyle,
+    inputErrorStyle,
+    labelText,
     ...rest
 }: StyledInputProps) => {
     const handleBlur = () => {
@@ -45,7 +51,8 @@ const StyledInput = observer(({
     };
 
     return (
-        <div>
+        <YStack>
+            {labelText && <Text style={inputLabelStyle}>{labelText}</Text>}
             <Tamagui_Reactive_Input
                 type={type}
                 placeholder={placeholder}
@@ -54,8 +61,8 @@ const StyledInput = observer(({
                 style={inputStyle}
                 {...rest}
             />
-            {error$.get() && <Text style={textStyle}>{error$.get()}</Text>}
-        </div>
+            {error$.get() && <Text style={inputErrorStyle}>{error$.get()}</Text>}
+        </YStack>
     );
 });
 
