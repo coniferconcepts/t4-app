@@ -1,9 +1,8 @@
-// Form.tsx
 import React from 'react';
-import { YStack, Text, Button } from 'tamagui';
+import { YStack, Text, Button, InputProps } from 'tamagui';
 import { useObservable } from '@legendapp/state/react';
 import { AnySchema, safeParse } from 'valibot';
-import StyledInput, { TamaguiReactiveInputProps } from './StyledInput';
+import StyledInput from './StyledInput';
 import { getInputPreset, InputPreset } from './inputPresets';
 import { batch, computed, when } from '@legendapp/state';
 
@@ -24,15 +23,16 @@ interface PresetInputConfig {
 interface FormProps {
     inputsConfig: (PresetInputConfig | CustomInputConfig)[];
     onSubmit: (formData: Record<string, any>) => void;
-    formContainerStyle?: TamaguiReactiveInputProps['style'];
-    inputContainerStyle?: TamaguiReactiveInputProps['style'];
-    inputStyle?: TamaguiReactiveInputProps['style'];
-    inputTextStyle?: TamaguiReactiveInputProps['style'];
-    inputLabelStyle?: TamaguiReactiveInputProps['style'];
-    inputErrorStyle?: TamaguiReactiveInputProps['style'];
+    formContainerStyle?: InputProps['style'];
+    inputContainerStyle?: InputProps['style'];
+    inputStyle?: InputProps['style'];
+    inputTextStyle?: InputProps['style'];
+    inputLabelStyle?: InputProps['style'];
+    inputErrorStyle?: InputProps['style'];
     customButton?: JSX.Element | null;
     submitTrigger$: any; // Use appropriate observable type here
     showSubmit?: boolean;
+    autoSubmit?: boolean; // New prop for auto-submit
 }
 
 const Form = ({
@@ -47,9 +47,11 @@ const Form = ({
     customButton,
     submitTrigger$,
     showSubmit = true,
+    autoSubmit = false, // Default to false
 }: FormProps) => {
     const values$ = {};
     const errors$ = {};
+    const focusStates$ = {};
     const didSubmit$ = useObservable(false);
     const formError$ = useObservable('');
 
@@ -58,6 +60,7 @@ const Form = ({
         const config = 'preset' in input ? { ...getInputPreset(input.preset), name: input.name, labelText: input.labelText } : input;
         values$[config.name] = useObservable('');
         errors$[config.name] = useObservable('');
+        focusStates$[config.name] = useObservable(false); // Track focus state
     });
 
     // Use computed to observe changes and validate inputs reactively
@@ -130,6 +133,45 @@ const Form = ({
     // Use `when` to trigger form submission when `submitTrigger$` is set to true
     when(() => submitTrigger$.get(), handleSubmit);
 
+    // Compute if all fields are valid
+    const allFieldsValid$ = computed(() => {
+        return inputsConfig.every((input) => {
+            const config = 'preset' in input ? { ...getInputPreset(input.preset), name: input.name, labelText: input.labelText } : input;
+            const value = values$[config.name].get();
+            if (value === '') {
+                return false; // Skip validation if the field is empty
+            }
+            const result = safeParse(config.schema, value);
+            errors$[config.name].set(result.success ? '' : result.issues[0]?.message || 'Validation failed');
+            return result.success;
+        });
+    });
+
+    // Compute if any field has focus
+    const anyFieldHasFocus$ = computed(() => {
+        return inputsConfig.some((input) => {
+            const config = 'preset' in input ? { ...getInputPreset(input.preset), name: input.name, labelText: input.labelText } : input;
+            return focusStates$[config.name].get();
+        });
+    });
+
+    // Use `when` to auto-submit if all fields are valid and no field has focus
+    when(
+        () => autoSubmit && allFieldsValid$.get() && !anyFieldHasFocus$.get(),
+        handleSubmit
+    );
+
+    const handleBlur = (name: string) => {
+        const config = inputsConfig.find(input => input.name === name);
+        if (config) {
+            const inputConfig = 'preset' in config ? { ...getInputPreset(config.preset), name: config.name, labelText: config.labelText } : config;
+            const result = safeParse(inputConfig.schema, values$[inputConfig.name].get());
+            const error = result.success ? null : result.issues[0]?.message || 'Validation failed';
+            errors$[config.name].set(error || '');
+            updateFormError();
+        }
+    };
+
     return (
         <YStack style={formContainerStyle}>
             {formError$.get() && <Text>{formError$.get()}</Text>}
@@ -154,6 +196,11 @@ const Form = ({
                             inputLabelStyle={inputLabelStyle}
                             inputErrorStyle={inputErrorStyle}
                             labelText={config.labelText}
+                            onFocus={() => focusStates$[config.name].set(true)}
+                            onBlur={() => {
+                                focusStates$[config.name].set(false);
+                                handleBlur(config.name);
+                            }}
                         />
                     </YStack>
                 );

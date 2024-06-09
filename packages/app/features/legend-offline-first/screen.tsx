@@ -159,6 +159,8 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
         inputErrorStyle={inputErrorStyle}
         submitTrigger$={submitTrigger$}
         showSubmit={false} // Hide the submit button within the form
+        autoSubmit={true} // Auto-submit the form when all fields are valid
+
       />
       <Button onPress={handleCustomSubmit}>Custom Submit</Button>
       <H2 onPress={updateCar}>Update Car</H2>
