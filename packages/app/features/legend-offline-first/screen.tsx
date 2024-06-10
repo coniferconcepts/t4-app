@@ -19,40 +19,56 @@ type PartialCar = Partial<Car>
 const customStringSchema = v.pipe(
   v.string('Custom string must be a string.'),
   v.nonEmpty('Custom string must not be empty.')
-);
+)
 
 const inputsConfig = [
   { name: 'userEmail', preset: 'email', labelText: 'Email Address' },
   { name: 'userPassword', preset: 'password', labelText: 'Password' },
   { name: 'userNumber', preset: 'number', labelText: 'Age' },
-  { name: 'customString', schema: customStringSchema, placeholder: 'Custom String', type: 'text', labelText: 'Custom Field' },
-];
+  {
+    name: 'customString',
+    schema: customStringSchema,
+    placeholder: 'Custom String',
+    type: 'text',
+    labelText: 'Custom Field',
+  },
+  {
+    name: 'Make',
+    preset: 'select',
+    labelText: 'Make',
+    options: [
+      { id: 1, value: 'Honda' },
+      { id: 2, value: 'Toyota' },
+      { id: 3, value: 'Ford' },
+    ],
+  },
+]
 
 const formContainerStyle = {
   padding: 20,
   backgroundColor: '#f0f0f0',
-};
+}
 
 const inputContainerStyle = {
   marginBottom: 20,
-};
+}
 
 const inputStyle = {
   borderColor: 'green',
   padding: 15,
-};
+}
 
 const inputTextStyle = {
   color: 'red',
-};
+}
 
 const inputLabelStyle = {
   color: 'blue',
-};
+}
 
 const inputErrorStyle = {
   color: 'orange',
-};
+}
 
 export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
   const carsList = cars$.get()
@@ -92,17 +108,16 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
     cars$[firstId].assign({ year: 2015, createdAt: '2024-01-01T00:00:00.000Z' })
   }
 
-  const submitTrigger$ = observable(false);
+  const submitTrigger$ = observable(false)
 
   const handleFormSubmit = (formData) => {
-    console.log('Form Submitted:', formData);
-  };
+    console.log('Form Submitted:', formData)
+  }
 
   const handleCustomSubmit = () => {
-    console.log('Custom submit button clicked');
-    submitTrigger$.set(true);
-  };
-
+    console.log('Custom submit button clicked')
+    submitTrigger$.set(true)
+  }
 
   // change form to have additional options, display submit button or not
   // submit function called when items change or when button is pressed
@@ -160,7 +175,6 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
         submitTrigger$={submitTrigger$}
         showSubmit={false} // Hide the submit button within the form
         autoSubmit={true} // Auto-submit the form when all fields are valid
-
       />
       <Button onPress={handleCustomSubmit}>Custom Submit</Button>
       <H2 onPress={updateCar}>Update Car</H2>

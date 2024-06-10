@@ -32,33 +32,34 @@ const NumberSchema = v.pipe(
 export type NumberInput = v.InferInput<typeof NumberSchema>
 export type NumberOutput = v.InferOutput<typeof NumberSchema>
 
-const StringSchema = v.pipe(
-  v.string('Your input must be a string.'),
-  v.nonEmpty('Please enter a value.')
-)
-export type StringInput = v.InferInput<typeof StringSchema>
-export type StringOutput = v.InferOutput<typeof StringSchema>
+const SelectSchema = v.string('Please select an option.')
+export type SelectInput = v.InferInput<typeof SelectSchema>
+export type SelectOutput = v.InferOutput<typeof SelectSchema>
 
 export const inputPresets = {
-  email: {
-    placeholder: 'Email',
-    type: 'email',
-    schema: EmailSchema,
-  },
   password: {
+    name: 'password',
     placeholder: 'Password',
     type: 'password',
     schema: PasswordSchema,
   },
+  email: {
+    name: 'email',
+    placeholder: 'Email',
+    type: 'email',
+    schema: EmailSchema,
+  },
   number: {
+    name: 'number',
     placeholder: 'Number',
     type: 'number',
     schema: NumberSchema,
   },
-  string: {
-    placeholder: 'String',
-    type: 'text',
-    schema: StringSchema,
+  select: {
+    name: 'select',
+    placeholder: 'Select',
+    type: 'select',
+    schema: SelectSchema,
   },
 }
 

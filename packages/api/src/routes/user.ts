@@ -123,7 +123,9 @@ const validateRedirectDomain = (ctx: ApiContextProps, redirectTo?: string) => {
 
 const signInWithAppleIdTokenHandler =
   (ctx: ApiContextProps) =>
-  async (input: InferInput<typeof SignInSchema> & { provider: AuthProviderName; idToken: string }) => {
+  async (
+    input: InferInput<typeof SignInSchema> & { provider: AuthProviderName; idToken: string }
+  ) => {
     // This supports native sign-in with apple
     //
     // It could be possible to fetch the Apple public RSA key and verify the JWT.

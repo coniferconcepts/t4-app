@@ -1,9 +1,31 @@
-import { InferInput, email as emailValidator, picklist, minLength, object, optional, string, toLowerCase, trim, pipe } from "valibot"
+import {
+  InferInput,
+  email as emailValidator,
+  picklist,
+  minLength,
+  object,
+  optional,
+  string,
+  toLowerCase,
+  trim,
+  pipe,
+} from 'valibot'
 import { AuthProviderName } from '../auth/providers'
 
-const email = pipe(string('Email address is required.'), trim() , minLength(1, 'Email address is required.') , toLowerCase() , emailValidator('The email address is invalid.') ,)
+const email = pipe(
+  string('Email address is required.'),
+  trim(),
+  minLength(1, 'Email address is required.'),
+  toLowerCase(),
+  emailValidator('The email address is invalid.')
+)
 const optionalEmail = optional(
-  pipe(string('The email address is invalid.'), trim() , toLowerCase() , emailValidator('The email address is invalid.') ,)
+  pipe(
+    string('The email address is invalid.'),
+    trim(),
+    toLowerCase(),
+    emailValidator('The email address is invalid.')
+  )
 )
 
 const password = optional(pipe(string(), minLength(1, 'Password is required.')))
