@@ -62,22 +62,23 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
   const carsList = cars$.get()
   console.log('carsList', carsList)
 
-  const newCar$ = observable<PartialCar>({
-    id: createId(),
-    make: 'Honda',
-    model: 'Pilot',
-    year: 2015,
-    color: 'Silver',
-    price: 17000,
-    mileage: 25000,
-    fuelType: 'Gasoline',
-    transmission: 'Automatic',
-  })
+  // const newCar$ = observable<PartialCar>({
+  //   id: createId(),
+  //   make: 'Honda',
+  //   model: 'Pilot',
+  //   year: 2015,
+  //   color: 'Silver',
+  //   price: 17000,
+  //   mileage: 25000,
+  //   fuelType: 'Gasoline',
+  //   transmission: 'Automatic',
+  // })
 
-  function createCar() {
-    console.log('createCar')
-    const newId = newCar$.get().id
-    if (newId) cars$[newId].assign(newCar$.get())
+  function createCar(car: PartialCar) {
+    console.log('createCar', car)
+    car.id = createId()
+    console.log('car with id', car)
+    if (car.id) cars$[car.id].assign(car)
   }
 
   function updateCar() {
@@ -93,13 +94,19 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
 
     // data needs to have an existing createdAt field to be updated, adding it here
     // since original data doesn't have it populated
-    cars$[firstId].set({ ...firstItem, year: 2015, createdAt: '2024-01-01T00:00:00.000Z' })
+    cars$[firstId].set({ ...firstItem, year: firstItem.year + 1, createdAt: '2024-01-01T00:00:00.000Z' })
+  }
+
+  function clearAllCar() {
+    console.log('clearAllCar')
+    cars$.set({})
   }
 
   const submitTrigger$ = observable(false)
 
   const handleFormSubmit = (formData) => {
     console.log('Form Submitted:', formData)
+    createCar(formData)
   }
 
   const handleCustomSubmit = () => {
@@ -162,10 +169,11 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
         inputErrorStyle={inputErrorStyle}
         submitTrigger$={submitTrigger$}
         showSubmit={false} // Hide the submit button within the form
-        autoSubmit={true} // Auto-submit the form when all fields are valid
+        autoSubmit={false} // Auto-submit the form when all fields are valid
       />
       <Button onPress={handleCustomSubmit}>Custom Submit</Button>
       <H2 onPress={updateCar}>Update Car</H2>
+      <H2 onPress={clearAllCar}>Clear All Cars</H2>
     </YStack>
   )
 })
