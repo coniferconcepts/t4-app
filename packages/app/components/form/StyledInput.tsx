@@ -1,23 +1,23 @@
-import React from 'react';
-import { Text, YStack, InputProps, Input, Select } from 'tamagui';
-import { observer } from '@legendapp/state/react';
-import { ChevronDown, Check } from '@tamagui/lucide-icons';
+import React from 'react'
+import { Text, YStack, InputProps, Input, Select } from 'tamagui'
+import { observer } from '@legendapp/state/react'
+import { ChevronDown, Check } from '@tamagui/lucide-icons'
 
 interface StyledInputProps {
-  value$: any;
-  error$: any;
-  validateOnBlur?: (value: any) => string | null;
-  inputStyle?: InputProps['style'];
-  inputTextStyle?: InputProps['style'];
-  inputLabelStyle?: InputProps['style'];
-  inputErrorStyle?: InputProps['style'];
-  labelText?: string;
-  placeholder?: string;
-  type?: string;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  onChange?: () => void; // Add onChange prop for select
-  options?: { id: number; value: string }[]; // Add options prop for select
+  value$: any
+  error$: any
+  validateOnBlur?: (value: any) => string | null
+  inputStyle?: InputProps['style']
+  inputTextStyle?: InputProps['style']
+  inputLabelStyle?: InputProps['style']
+  inputErrorStyle?: InputProps['style']
+  labelText?: string
+  placeholder?: string
+  type?: string
+  onFocus?: () => void
+  onBlur?: () => void
+  onChange?: () => void // Add onChange prop for select
+  options?: { id: number; value: string }[] // Add options prop for select
 }
 
 const StyledInput = observer(
@@ -39,12 +39,12 @@ const StyledInput = observer(
     ...rest
   }: StyledInputProps) => {
     const handleBlur = () => {
-      const error = validateOnBlur ? validateOnBlur(value$.get()) : null;
-      error$.set(error || '');
-      if (onBlur) onBlur();
-    };
+      const error = validateOnBlur ? validateOnBlur(value$.get()) : null
+      error$.set(error || '')
+      if (onBlur) onBlur()
+    }
 
-    const currentValue = value$.get();
+    const currentValue = value$.get()
 
     return (
       <YStack>
@@ -53,8 +53,8 @@ const StyledInput = observer(
           <Select
             value={currentValue}
             onValueChange={(value) => {
-              value$.set(value);
-              if (onChange) onChange();
+              value$.set(value)
+              if (onChange) onChange()
             }}
             {...rest}
           >
@@ -93,8 +93,8 @@ const StyledInput = observer(
         )}
         {error$.get() && <Text style={inputErrorStyle}>{error$.get()}</Text>}
       </YStack>
-    );
+    )
   }
-);
+)
 
-export default StyledInput;
+export default StyledInput

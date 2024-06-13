@@ -16,20 +16,20 @@
     "clean": "git clean -xdf .expo node_modules ios android"
   },
   "dependencies": {
-    "@babel/runtime": "^7.23.2",
-    "@shopify/flash-list": "^1.6.3",
+    "@babel/runtime": "^7.24.7",
+    "@shopify/flash-list": "^1.6.4",
     "@t4/ui": "2.0.0",
     "app": "2.0.0",
     "babel-plugin-module-resolver": "^5.0.0",
     "burnt": "^0.12.2",
     "expo": "^51.0.9",
     "expo-apple-authentication": "~6.1.2",
-    "expo-constants": "~16.0.2",
+    "expo-constants": "^16.0.2",
     "expo-crypto": "~12.6.0",
     "expo-dev-client": "~4.0.15",
     "expo-font": "~12.0.6",
     "expo-linear-gradient": "^13.0.2",
-    "expo-linking": "~6.3.1",
+    "expo-linking": "^6.3.1",
     "expo-router": "3.5.15",
     "expo-splash-screen": "0.27.4",
     "expo-status-bar": "~1.12.1",
@@ -40,7 +40,7 @@
     "react-dom": "^18.3.1",
     "react-native": "0.74.2",
     "react-native-gesture-handler": "~2.16.2",
-    "react-native-mmkv": "^2.10.2",
+    "react-native-mmkv": "^2.12.2",
     "react-native-safe-area-context": "4.10.4",
     "react-native-screens": "~3.31.1",
     "react-native-web": "~0.19.12"
@@ -50,6 +50,6 @@
     "@expo/metro-config": "~0.18.4",
     "@tamagui/babel-plugin": "^1.100.3",
     "metro-minify-terser": "^0.80.9",
-    "typescript": "^5.2.2"
+    "typescript": "^5.4.5"
   }
 }

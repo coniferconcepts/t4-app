@@ -43,6 +43,13 @@
       "when": 1717422694982,
       "tag": "0005_little_human_torch",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1718199603928,
+      "tag": "0006_workable_gladiator",
+      "breakpoints": true
     }
   ]
 }

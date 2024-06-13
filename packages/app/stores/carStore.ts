@@ -6,9 +6,6 @@ import { client } from 'app/utils/trpc'
 
 export const cars$ = observable<Car[]>(
   syncedCrud<Car, Car[]>({
-    // generateId: () => createId(),
-    mode: 'merge',
-    // as: 'array',
     changesSince: 'last-sync',
     fieldCreatedAt: 'createdAt',
     fieldUpdatedAt: 'updatedAt',
@@ -23,10 +20,11 @@ export const cars$ = observable<Car[]>(
     },
 
     list: async () => {
-      const data = await client.car.list.query()
-      return data || []
+      const record: Record<string, Car[]> = await client.car.list.query()
+      const data: Car[] = Object.values(record).flat()
+      return data
     },
-    create: async (car: Car, params: any) => {
+    create: async (car: Car) => {
       console.log('create', car)
       try {
         const data = await client.car.create.mutate(car)
@@ -36,7 +34,7 @@ export const cars$ = observable<Car[]>(
         throw error
       }
     },
-    update: async (car: Partial<Car>, params: any) => {
+    update: async (car: Partial<Car>) => {
       console.log('update', car)
       try {
         const data = await client.car.update.mutate(car)
@@ -46,7 +44,7 @@ export const cars$ = observable<Car[]>(
         throw error
       }
     },
-    delete: async (car: Partial<Car>, params: any) => {
+    delete: async (car: Partial<Car>) => {
       console.log('delete', car?.id)
       const { id } = car
       try {

@@ -30,8 +30,11 @@ export const carsRouter = router({
         throw new Error('Invalid car')
       }
 
+      const now = new Date()
+
       const newCar = validationResult.output
-      newCar.createdAt = new Date().toISOString()
+      newCar.createdAt = now
+      console.log('new car with updated createdAt', newCar)
 
       const newCarResult = await db.insert(CarTable).values(newCar).returning()
       console.log('newCarResult', newCarResult)
@@ -53,8 +56,12 @@ export const carsRouter = router({
 
       const { id } = validationResult.output
 
+      const now = new Date()
+
       const updatedCar = validationResult.output
-      updatedCar.updatedAt = new Date().toISOString()
+      updatedCar.updatedAt = now
+
+      console.log('updatedCar', updatedCar)
 
       const updatedCarResult = await db
         .update(CarTable)

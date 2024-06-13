@@ -105,7 +105,7 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
 
     // data needs to have an existing createdAt field to be updated, adding it here
     // since original data doesn't have it populated
-    cars$[firstId].assign({ year: 2015, createdAt: '2024-01-01T00:00:00.000Z' })
+    cars$[firstId].set({ ...firstItem, year: 2015, createdAt: '2024-01-01T00:00:00.000Z' })
   }
 
   const submitTrigger$ = observable(false)
