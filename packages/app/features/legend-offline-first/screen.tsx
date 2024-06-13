@@ -22,26 +22,14 @@ const customStringSchema = v.pipe(
 )
 
 const inputsConfig = [
-  { name: 'userEmail', preset: 'email', labelText: 'Email Address' },
-  { name: 'userPassword', preset: 'password', labelText: 'Password' },
-  { name: 'userNumber', preset: 'number', labelText: 'Age' },
-  {
-    name: 'customString',
-    schema: customStringSchema,
-    placeholder: 'Custom String',
-    type: 'text',
-    labelText: 'Custom Field',
-  },
-  {
-    name: 'Make',
-    preset: 'select',
-    labelText: 'Make',
-    options: [
-      { id: 1, value: 'Honda' },
-      { id: 2, value: 'Toyota' },
-      { id: 3, value: 'Ford' },
-    ],
-  },
+  { name: 'make', preset: 'string', labelText: 'Make' },
+  { name: 'model', preset: 'string', labelText: 'Model' },
+  { name: 'year', preset: 'number', labelText: 'Year' },
+  { name: 'color', preset: 'string', labelText: 'Color' },
+  { name: 'price', preset: 'number', labelText: 'Price' },
+  { name: 'mileage', preset: 'number', labelText: 'Mileage' },
+  { name: 'fuelType', preset: 'string', labelText: 'Fuel Type' },
+  { name: 'transmission', preset: 'string', labelText: 'Transmission' },
 ]
 
 const formContainerStyle = {

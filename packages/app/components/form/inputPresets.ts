@@ -9,6 +9,13 @@ const EmailSchema = v.pipe(
 export type EmailInput = v.InferInput<typeof EmailSchema>
 export type EmailOutput = v.InferOutput<typeof EmailSchema>
 
+const StringSchema = v.pipe(
+  v.string('Must be a string.'),
+  v.nonEmpty('Please enter your response.')
+)
+export type StringInput = v.InferInput<typeof StringSchema>
+export type StringOutput = v.InferOutput<typeof StringSchema>
+
 const PasswordSchema = v.pipe(
   v.string('Your password must be a string.'),
   v.nonEmpty('Please enter your password.'),
@@ -37,6 +44,12 @@ export type SelectInput = v.InferInput<typeof SelectSchema>
 export type SelectOutput = v.InferOutput<typeof SelectSchema>
 
 export const inputPresets = {
+  string: {
+    name: 'string',
+    placeholder: '',
+    type: 'text',
+    schema: StringSchema,
+  },
   password: {
     name: 'password',
     placeholder: 'Password',

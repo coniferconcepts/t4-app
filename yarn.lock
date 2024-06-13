@@ -2418,7 +2418,7 @@
   resolved "https://registry.yarnpkg.com/@isaacs/cliui/-/cliui-8.0.2.tgz#b37667b7bc181c168782259bab42474fbf52b550"
   integrity sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==
   dependencies:
-    string-width "^5.1.2"
+    string-width "^5.2.0"
     string-width-cjs "npm:string-width@^4.2.0"
     strip-ansi "^7.0.1"
     strip-ansi-cjs "npm:strip-ansi@^6.0.1"
@@ -7934,7 +7934,7 @@ execa@^5.0.0, execa@^5.1.1:
     is-stream "^2.0.0"
     merge-stream "^2.0.0"
     npm-run-path "^4.0.1"
-    onetime "^5.1.2"
+    onetime "^5.2.0"
     signal-exit "^3.0.3"
     strip-final-newline "^2.0.0"
 
@@ -8193,7 +8193,7 @@ fast-glob@3.3.1:
   dependencies:
     "@nodelib/fs.stat" "^2.0.2"
     "@nodelib/fs.walk" "^1.2.3"
-    glob-parent "^5.1.2"
+    glob-parent "^5.2.0"
     merge2 "^1.3.0"
     micromatch "^4.0.4"
 
@@ -8204,7 +8204,7 @@ fast-glob@^3.2.11, fast-glob@^3.2.5, fast-glob@^3.2.7, fast-glob@^3.2.9, fast-gl
   dependencies:
     "@nodelib/fs.stat" "^2.0.2"
     "@nodelib/fs.walk" "^1.2.3"
-    glob-parent "^5.1.2"
+    glob-parent "^5.2.0"
     merge2 "^1.3.0"
     micromatch "^4.0.4"
 
@@ -10607,7 +10607,7 @@ minipass@^2.6.0, minipass@^2.9.0:
   resolved "https://registry.yarnpkg.com/minipass/-/minipass-2.9.0.tgz#e713762e7d3e32fed803115cf93e04bca9fcc9a6"
   integrity sha512-wxfUjg9WebH+CUDX/CdbRlh5SmfZiy/hpkxaRI16Y9W56Pa75sWgd/rvFilSgrauD9NyFymP/+JFV3KwzIsJeg==
   dependencies:
-    safe-buffer "^5.1.2"
+    safe-buffer "^5.2.0"
     yallist "^3.0.0"
 
 minipass@^3.0.0:

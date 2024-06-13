@@ -31,7 +31,7 @@
     "miniflare": "3.20240512.0",
     "oslo": "1.2.0",
     "superjson": "1.13.3",
-    "ts-pattern": "^5.1.2",
+    "ts-pattern": "^5.2.0",
     "valibot": "^0.31.1"
   },
   "devDependencies": {
