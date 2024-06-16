@@ -74,7 +74,7 @@ interface ToggleGroupInput extends InputBase {
 }
 
 interface TextAreaInput extends InputBase {
-  preset: 'textBox';
+  preset: 'textArea';
   schema?: v.AnySchema;
   style?: { minHeight?: number };
 }

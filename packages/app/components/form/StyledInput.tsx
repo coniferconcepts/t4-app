@@ -88,9 +88,10 @@ const StyledInput = observer(
           <XStack alignItems="center" gap="$4">
             {/* <Text style={inputLabelStyle}>{labelText}</Text> */}
             <Switch size="$4"
-              onTouchEnd={(checked) => {
-                console.log('checked', checked.target.state)
-                value$.set(checked.target.state)
+              onCheckedChange={(value) => {
+                console.log('checked', value)
+                value$.set(value)
+                if (onChange) onChange();
               }} {...rest}>
               <Switch.Thumb animation="bouncy" />
             </Switch>
