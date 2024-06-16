@@ -118,10 +118,10 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
         inputLabelStyle={inputLabelStyle}
         inputErrorStyle={inputErrorStyle}
         submitTrigger$={submitTrigger$}
-        showSubmit={false}
+        //showSubmit={false}
         autoSubmit={false}
       />
-      <Button onPress={handleCustomSubmit}>Custom Submit</Button>
+      {/* <Button onPress={handleCustomSubmit}>Custom Submit</Button> */}
       <H2 onPress={updateCar}>Update Car</H2>
       <H2 onPress={clearAllCar}>Clear All Cars</H2>
     </YStack>
