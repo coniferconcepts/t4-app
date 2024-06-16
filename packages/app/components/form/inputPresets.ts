@@ -1,20 +1,12 @@
-// inputPresets.ts
 import * as v from 'valibot'
 
 const EmailSchema = v.pipe(
-  v.string('Your email must be a string.'),
-  v.nonEmpty('Please enter your email.'),
-  v.email('The email address is badly formatted.')
+  v.string('The email address is badly formatted.'),
+  v.email('The email address is badly formatted.'),
+  v.nonEmpty('Please enter your email.')
 )
 export type EmailInput = v.InferInput<typeof EmailSchema>
 export type EmailOutput = v.InferOutput<typeof EmailSchema>
-
-const StringSchema = v.pipe(
-  v.string('Must be a string.'),
-  v.nonEmpty('Please enter your response.')
-)
-export type StringInput = v.InferInput<typeof StringSchema>
-export type StringOutput = v.InferOutput<typeof StringSchema>
 
 const PasswordSchema = v.pipe(
   v.string('Your password must be a string.'),
@@ -43,13 +35,29 @@ const SelectSchema = v.string('Please select an option.')
 export type SelectInput = v.InferInput<typeof SelectSchema>
 export type SelectOutput = v.InferOutput<typeof SelectSchema>
 
+const StringSchema = v.pipe(
+  v.string('Input must be a string.'),
+  v.maxLength(500, 'Input must be no more than 500 characters.')
+)
+export type StringInput = v.InferInput<typeof StringSchema>
+export type StringOutput = v.InferOutput<typeof StringSchema>
+
+const TextAreaSchema = v.pipe(
+  v.string('Input must be a string.'),
+  v.maxLength(5000, 'Input must be no more than 5000 characters.')
+)
+export type TextAreaInput = v.InferInput<typeof TextAreaSchema>
+export type TextAreaOutput = v.InferOutput<typeof TextAreaSchema>
+
+const SliderSchema = v.pipe(
+  v.number('Please enter a valid number.'),
+  v.minValue(0, 'Your number must be greater than 0.'),
+  v.maxValue(100, 'Your number must be less than or equal to 100.')
+)
+export type SliderInput = v.InferInput<typeof SliderSchema>
+export type SliderOutput = v.InferOutput<typeof SliderSchema>
+
 export const inputPresets = {
-  string: {
-    name: 'string',
-    placeholder: '',
-    type: 'text',
-    schema: StringSchema,
-  },
   password: {
     name: 'password',
     placeholder: 'Password',
@@ -73,6 +81,42 @@ export const inputPresets = {
     placeholder: 'Select',
     type: 'select',
     schema: SelectSchema,
+  },
+  string: {
+    name: 'string',
+    placeholder: '',
+    type: 'text',
+    schema: StringSchema,
+  },
+  textArea: {
+    name: 'textArea',
+    placeholder: '',
+    type: 'textArea',
+    schema: TextAreaSchema,
+  },
+  slider: {
+    name: 'slider',
+    placeholder: '',
+    type: 'slider',
+    schema: SliderSchema,
+  },
+  switch: {
+    name: 'switch',
+    placeholder: '',
+    type: 'switch',
+    schema: v.boolean(),
+  },
+  radioGroup: {
+    name: 'radioGroup',
+    placeholder: '',
+    type: 'radioGroup',
+    schema: v.string('Please select an option.'),
+  },
+  toggleGroup: {
+    name: 'toggleGroup',
+    placeholder: '',
+    type: 'toggleGroup',
+    schema: v.array(v.string('Please select an option.')),
   },
 }
 

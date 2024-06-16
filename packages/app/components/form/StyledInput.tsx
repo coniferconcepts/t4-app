@@ -1,23 +1,27 @@
-import React from 'react'
-import { Text, YStack, InputProps, Input, Select } from 'tamagui'
-import { observer } from '@legendapp/state/react'
-import { ChevronDown, Check } from '@tamagui/lucide-icons'
+import React from 'react';
+import { Text, YStack, Input, Select, Switch, Slider, XStack, Label, RadioGroup, ToggleGroup, TextArea } from 'tamagui';
+import { observer } from '@legendapp/state/react';
+import { ChevronDown, Check } from '@tamagui/lucide-icons';
 
 interface StyledInputProps {
-  value$: any
-  error$: any
-  validateOnBlur?: (value: any) => string | null
-  inputStyle?: InputProps['style']
-  inputTextStyle?: InputProps['style']
-  inputLabelStyle?: InputProps['style']
-  inputErrorStyle?: InputProps['style']
-  labelText?: string
-  placeholder?: string
-  type?: string
-  onFocus?: () => void
-  onBlur?: () => void
-  onChange?: () => void // Add onChange prop for select
-  options?: { id: number; value: string }[] // Add options prop for select
+  value$: any;
+  error$: any;
+  validateOnBlur?: (value: any) => string | null;
+  inputStyle?: any;
+  inputTextStyle?: any;
+  inputLabelStyle?: any;
+  inputErrorStyle?: any;
+  labelText?: string;
+  placeholder?: string;
+  type?: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  onChange?: () => void;
+  options?: { id: number; value: string }[];
+  id?: string;
+  size?: string;
+  defaultChecked?: boolean;
+  style?: object;
 }
 
 const StyledInput = observer(
@@ -36,15 +40,19 @@ const StyledInput = observer(
     onBlur,
     onChange,
     options,
+    id,
+    size,
+    defaultChecked,
+    style,
     ...rest
   }: StyledInputProps) => {
     const handleBlur = () => {
-      const error = validateOnBlur ? validateOnBlur(value$.get()) : null
-      error$.set(error || '')
-      if (onBlur) onBlur()
-    }
+      const error = validateOnBlur ? validateOnBlur(value$.get()) : null;
+      error$.set(error || '');
+      if (onBlur) onBlur();
+    };
 
-    const currentValue = value$.get()
+    const currentValue = value$.get() || (type === 'toggleGroup' || type === 'radioGroup' ? [] : '');
 
     return (
       <YStack>
@@ -53,8 +61,8 @@ const StyledInput = observer(
           <Select
             value={currentValue}
             onValueChange={(value) => {
-              value$.set(value)
-              if (onChange) onChange()
+              value$.set(value);
+              if (onChange) onChange();
             }}
             {...rest}
           >
@@ -76,25 +84,102 @@ const StyledInput = observer(
               </Select.Viewport>
             </Select.Content>
           </Select>
-        ) : (
-          <Input
-            placeholder={placeholder}
+        ) : type === 'switch' ? (
+          <XStack alignItems="center" gap="$4">
+            {/* <Text style={inputLabelStyle}>{labelText}</Text> */}
+            <Switch size="$4"
+              onTouchEnd={(checked) => {
+                console.log('checked', checked.target.state)
+                value$.set(checked.target.state)
+              }} {...rest}>
+              <Switch.Thumb animation="bouncy" />
+            </Switch>
+
+          </XStack>
+        ) : type === 'slider' ? (
+          <YStack margin="$6" gap="$2" >
+            {/* <Text style={inputLabelStyle}>{labelText}</Text> */}
+            <Slider
+              value={[currentValue]} // Ensure the value is an array
+              onValueChange={(value) => {
+                value$.set(value[0]); // Assuming single value slider
+                if (onChange) onChange();
+              }}
+              {...style}
+              {...rest}
+            >
+              <Slider.Track>
+                <Slider.TrackActive />
+              </Slider.Track>
+              <Slider.Thumb index={0} circular elevate />
+            </Slider>
+          </YStack>
+        ) : type === 'radioGroup' ? (
+          <RadioGroup
             value={currentValue}
-            onChangeText={(value) => {
-              value$.set(value)
-              if (onChange) onChange()
+            onValueChange={(value) => {
+              value$.set(value);
+              if (onChange) onChange();
             }}
-            secureTextEntry={type?.includes('password')}
-            onBlur={handleBlur}
-            onFocus={onFocus}
-            style={inputStyle}
             {...rest}
-          />
-        )}
+          >
+            {options?.map((option, i) => (
+              <XStack key={option.id} alignItems="center" gap="$2">
+                <RadioGroup.Item value={option.value}>
+                  <RadioGroup.Indicator />
+                </RadioGroup.Item>
+                <Text>{option.value}</Text>
+              </XStack>
+            ))}
+          </RadioGroup>
+        ) : type === 'toggleGroup' ? (
+          <ToggleGroup
+            type="multiple"
+            value={currentValue}
+            onValueChange={(value) => {
+              value$.set(value);
+              if (onChange) onChange();
+            }}
+            {...rest}
+          >
+            {options?.map((option, i) => (
+              <ToggleGroup.Item key={option.id} value={option.value}>
+                <Text>{option.value}</Text>
+              </ToggleGroup.Item>
+            ))}
+          </ToggleGroup>
+        )
+          : type === 'textArea' ? (
+            <TextArea
+              value={currentValue}
+              onChangeText={(value) => {
+                console.log('TextArea value', value);
+                value$.set(value);
+                if (onChange) onChange();
+              }}
+              {...rest}
+            />
+          )
+
+            : (
+              <Input
+                placeholder={placeholder}
+                value={currentValue}
+                onChangeText={(value) => {
+                  value$.set(value);
+                  if (onChange) onChange();
+                }}
+                secureTextEntry={type?.includes('password')}
+                onBlur={handleBlur}
+                onFocus={onFocus}
+                style={inputStyle}
+                {...rest}
+              />
+            )}
         {error$.get() && <Text style={inputErrorStyle}>{error$.get()}</Text>}
       </YStack>
-    )
+    );
   }
-)
+);
 
-export default StyledInput
+export default StyledInput;
