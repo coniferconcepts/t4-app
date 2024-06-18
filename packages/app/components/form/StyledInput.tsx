@@ -11,6 +11,7 @@ import {
   RadioGroup,
   ToggleGroup,
   TextArea,
+  useTheme
 } from 'tamagui'
 import { observer } from '@legendapp/state/react'
 import { ChevronDown, Check } from '@tamagui/lucide-icons'
@@ -58,6 +59,33 @@ const StyledInput = observer(
     style,
     ...rest
   }: StyledInputProps) => {
+
+    const tamaguiTheme = useTheme()
+
+    const defaultInputStyle = {
+      borderColor: tamaguiTheme.purple4Light.val,
+      //padding: 15,
+      padding: 10,
+      borderWidth: 1,
+      //borderColor: 'gray',
+      borderRadius: 5,
+      outlineWidth: 0,
+      outlineStyle: 'none',
+      //backgroundColor: 'white',
+    }
+
+    const defaultInputTextStyle = {
+      //color: 'red',
+    }
+
+    const defaultInputLabelStyle = {
+      //color: 'blue',
+    }
+
+    const defaultInputErrorStyle = {
+      color: tamaguiTheme.purple11Dark.val,
+    }
+
     const handleBlur = () => {
       const error = validateOnBlur ? validateOnBlur(value$.get()) : null
       error$.set(error || '')
@@ -129,7 +157,9 @@ const StyledInput = observer(
                 </Slider.Track>
                 <Slider.Thumb index={0} circular elevate />
               </Slider>
-              <Text marginTop={10} alignSelf='center'>{currentValue}</Text>
+              <Text marginTop={10} alignSelf='center'>
+                {currentValue}
+              </Text>
             </YStack>
           )
         case 'radioGroup':
@@ -193,7 +223,7 @@ const StyledInput = observer(
               secureTextEntry={type?.includes('password')}
               onBlur={handleBlur}
               onFocus={onFocus}
-              style={inputStyle}
+              style={{ ...defaultInputStyle, ...inputStyle }}
               {...rest}
             />
           )
@@ -204,7 +234,7 @@ const StyledInput = observer(
       <YStack>
         {labelText && <Text style={inputLabelStyle}>{labelText}</Text>}
         {renderInputByType()}
-        {error$.get() && <Text style={inputErrorStyle}>{error$.get()}</Text>}
+        {error$.get() && <Text {...defaultInputErrorStyle} {...inputErrorStyle} >{error$.get()}</Text>}
       </YStack>
     )
   }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { YStack, Text, Button, InputProps } from 'tamagui'
+import { YStack, Text, Button, InputProps, TextProps, StackProps } from 'tamagui'
 import { observable, computed, batch, when } from '@legendapp/state'
 import { useObservable } from '@legendapp/state/react'
 import { AnySchema, safeParse } from 'valibot'
@@ -109,12 +109,12 @@ export type InputConfig =
 interface FormProps {
   inputsConfig: (PresetInputConfig | CustomInputConfig)[]
   onSubmit: (formData: Record<string, any>) => void
-  formContainerStyle?: InputProps['style']
+  formContainerStyle?: StackProps['style']
   inputContainerStyle?: InputProps['style']
   inputStyle?: InputProps['style']
-  inputTextStyle?: InputProps['style']
-  inputLabelStyle?: InputProps['style']
-  inputErrorStyle?: InputProps['style']
+  inputTextStyle?: TextProps['style']
+  inputLabelStyle?: TextProps['style']
+  inputErrorStyle?: TextProps['style']
   customButton?: JSX.Element | null
   submitTrigger$: any
   showSubmit?: boolean
@@ -141,6 +141,10 @@ const Form = ({
   const touched$ = useObservable({})
   const didSubmit$ = useObservable(false)
   const formError$ = useObservable('')
+
+  const defaultFormContainerStyle: StackProps['style'] = {
+    padding: 20, backgroundColor: '#f0f0f0'
+  }
 
   // biome-ignore lint/complexity/noForEach: <explanation>
   inputsConfig.forEach((input) => {
@@ -366,7 +370,7 @@ const Form = ({
   }
 
   return (
-    <YStack style={formContainerStyle}>
+    <YStack {...defaultFormContainerStyle} {...formContainerStyle}>
       {formError$.get() && <Text>{formError$.get()}</Text>}
       {inputsConfig.map((input, index) => {
         const config =

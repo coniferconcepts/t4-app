@@ -9,6 +9,7 @@ import { SolitoImage } from 'solito/image'
 import { formatNumber, formatPrice } from '@t4/ui/src/libs/number'
 import type { Car } from '@t4/api/src/db/schema'
 import Form, { InputConfig } from 'app/components/form/form'
+import { X } from '@tamagui/lucide-icons'
 
 type PartialCar = Partial<Car>
 
@@ -19,7 +20,16 @@ const inputsConfig: InputConfig[] = [
   { name: 'color', preset: 'string', labelText: 'Color', placeholder: 'Color' },
   { name: 'price', preset: 'number', labelText: 'Price', placeholder: 'Price' },
   { name: 'mileage', preset: 'number', labelText: 'Mileage', placeholder: 'Mileage' },
-  { name: 'fuelType', preset: 'radioGroup', labelText: 'Fuel Type', options: [{ id: 1, value: 'Gasoline' }, { id: 2, value: 'Diesel' }, { id: 3, value: 'Electric' }] },
+  {
+    name: 'fuelType',
+    preset: 'radioGroup',
+    labelText: 'Fuel Type',
+    options: [
+      { id: 1, value: 'Gasoline' },
+      { id: 2, value: 'Diesel' },
+      { id: 3, value: 'Electric' },
+    ],
+  },
   {
     name: 'transmission',
     preset: 'radioGroup',
@@ -27,7 +37,7 @@ const inputsConfig: InputConfig[] = [
     options: [
       { id: 1, value: 'Automatic' },
       { id: 2, value: 'Manual' },
-    ]
+    ],
   },
   // { name: 'accepted', preset: 'switch', labelText: 'Accepted' },
   // {
@@ -77,7 +87,7 @@ const inputContainerStyle = { marginBottom: 20 }
 const inputStyle = { borderColor: 'green', padding: 15 }
 const inputTextStyle = { color: 'red' }
 const inputLabelStyle = { color: 'blue' }
-const inputErrorStyle = { color: 'orange' }
+//const inputErrorStyle = { color: 'orange' }
 
 export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
   const carsList = cars$.get()
@@ -132,6 +142,8 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
                 console.log('delete', id)
                 cars$[id].delete()
               }}
+              width={400}
+              flex={1}
             >
               <SolitoImage
                 src='/t4-logo.png'
@@ -148,12 +160,13 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
                   {`${color} - ${year} - ${formatNumber(mileage)} miles - ${formatPrice(price)}`}
                 </Paragraph>
               </YStack>
+              <X size={22} position='absolute' right={0} top={'50%'} />
             </YStack>
           )
         }}
       </For>
-      <H2 onPress={createCar}>Add Car</H2>
-      <H2>Reusable Form</H2>
+      <YStack marginTop={20} />
+      <H2>Add Car</H2>
       <Form
         inputsConfig={inputsConfig}
         onSubmit={handleFormSubmit}
@@ -162,10 +175,10 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
         inputStyle={inputStyle}
         inputTextStyle={inputTextStyle}
         inputLabelStyle={inputLabelStyle}
-        inputErrorStyle={inputErrorStyle}
+        //inputErrorStyle={inputErrorStyle}
         submitTrigger$={submitTrigger$}
-        //showSubmit={false}
-        autoSubmit={false}
+      //showSubmit={false}
+      //autoSubmit={false}
       />
       {/* <Button onPress={handleCustomSubmit}>Custom Submit</Button> */}
       <H2 onPress={updateCar}>Update Car</H2>
