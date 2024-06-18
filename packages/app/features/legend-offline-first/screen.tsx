@@ -29,47 +29,47 @@ const inputsConfig: InputConfig[] = [
       { id: 2, value: 'Manual' },
     ]
   },
-  { name: 'accepted', preset: 'switch', labelText: 'Accepted' },
-  {
-    name: 'carType',
-    preset: 'select',
-    labelText: 'Car Type',
-    placeholder: 'Select Car Type',
-    options: [
-      { id: 1, value: 'SUV' },
-      { id: 2, value: 'Sedan' },
-    ], optional: true
-  },
-  {
-    name: 'driveType',
-    preset: 'radioGroup',
-    labelText: 'Drive Type',
-    options: [
-      { id: 1, value: 'AWD' },
-      { id: 2, value: 'FWD' },
-      { id: 3, value: 'RWD' },
-    ]
-    , optional: true
-  },
-  {
-    name: 'features',
-    preset: 'toggleGroup',
-    labelText: 'Features',
-    options: [
-      { id: 1, value: 'Sunroof' },
-      { id: 2, value: 'Leather Seats' },
-      { id: 3, value: 'Bluetooth' },
-    ], optional: true
-  },
-  {
-    name: 'description',
-    preset: 'textArea',
-    labelText: 'Description',
-    placeholder: 'Enter description',
-    style: { minHeight: 400 },
-    optional: true,
-  },
-  { name: 'rating', preset: 'slider', labelText: 'Rating', style: { max: 100, step: 1 } },
+  // { name: 'accepted', preset: 'switch', labelText: 'Accepted' },
+  // {
+  //   name: 'carType',
+  //   preset: 'select',
+  //   labelText: 'Car Type',
+  //   placeholder: 'Select Car Type',
+  //   options: [
+  //     { id: 1, value: 'SUV' },
+  //     { id: 2, value: 'Sedan' },
+  //   ], optional: true
+  // },
+  // {
+  //   name: 'driveType',
+  //   preset: 'radioGroup',
+  //   labelText: 'Drive Type',
+  //   options: [
+  //     { id: 1, value: 'AWD' },
+  //     { id: 2, value: 'FWD' },
+  //     { id: 3, value: 'RWD' },
+  //   ]
+  //   , optional: true
+  // },
+  // {
+  //   name: 'features',
+  //   preset: 'toggleGroup',
+  //   labelText: 'Features',
+  //   options: [
+  //     { id: 1, value: 'Sunroof' },
+  //     { id: 2, value: 'Leather Seats' },
+  //     { id: 3, value: 'Bluetooth' },
+  //   ], optional: true
+  // },
+  // {
+  //   name: 'description',
+  //   preset: 'textArea',
+  //   labelText: 'Description',
+  //   placeholder: 'Enter description',
+  //   style: { minHeight: 400 },
+  //   optional: true,
+  // },
+  // { name: 'rating', preset: 'slider', labelText: 'Rating', style: { max: 100, step: 1 } },
 ]
 
 const formContainerStyle = { padding: 20, backgroundColor: '#f0f0f0' }
@@ -87,6 +87,7 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
     console.log('createCar', car)
     car.id = createId()
     console.log('car with id', car)
+    cars$[car.id].set(car)
   }
 
   function updateCar() {

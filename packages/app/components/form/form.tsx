@@ -166,6 +166,7 @@ const Form = ({
 
   const validateInput = (name: string) => {
     const inputConfig = inputsConfig.find((input) => input.name === name)
+    console.log('validateInput', name, inputConfig)
     if (inputConfig) {
       const config =
         'preset' in inputConfig

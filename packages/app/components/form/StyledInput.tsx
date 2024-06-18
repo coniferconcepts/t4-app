@@ -129,7 +129,7 @@ const StyledInput = observer(
                 </Slider.Track>
                 <Slider.Thumb index={0} circular elevate />
               </Slider>
-              <Text marginTop={10} alignSelf='center'>{value$.get()}</Text>
+              <Text marginTop={10} alignSelf='center'>{currentValue}</Text>
             </YStack>
           )
         case 'radioGroup':
