@@ -28,6 +28,7 @@ const NumberSchema = v.pipe(
   v.number('Please enter a valid number.'),
   v.minValue(1, 'Your number must be greater than 0.')
 )
+
 export type NumberInput = v.InferInput<typeof NumberSchema>
 export type NumberOutput = v.InferOutput<typeof NumberSchema>
 
@@ -56,6 +57,37 @@ const SliderSchema = v.pipe(
 )
 export type SliderInput = v.InferInput<typeof SliderSchema>
 export type SliderOutput = v.InferOutput<typeof SliderSchema>
+
+const SwitchSchema = v.pipe(
+  v.any(),
+  v.transform((input) => {
+    console.log({ input })
+    if (!input || input === undefined) {
+      return Boolean(false)
+    }
+    Boolean(input)
+  }),
+  v.boolean('Please enter a valid boolean.')
+)
+
+export type SwitchInput = v.InferInput<typeof SwitchSchema>
+export type SwitchOutput = v.InferOutput<typeof SwitchSchema>
+
+const ToggleGroupSchema = v.pipe(
+  v.any(),
+  v.transform((input) => {
+    console.log({ input })
+    if (!input || input === undefined) {
+      return []
+    }
+    return input
+  }),
+  v.array(v.string('Please select an option.')),
+  v.minLength(1, 'Please select at least one option.')
+)
+
+export type ToggleGroupInput = v.InferInput<typeof ToggleGroupSchema>
+export type ToggleGroupOutput = v.InferOutput<typeof ToggleGroupSchema>
 
 export const inputPresets = {
   password: {
@@ -104,7 +136,7 @@ export const inputPresets = {
     name: 'switch',
     placeholder: '',
     type: 'switch',
-    schema: v.boolean(),
+    schema: SwitchSchema,
   },
   radioGroup: {
     name: 'radioGroup',
@@ -116,7 +148,7 @@ export const inputPresets = {
     name: 'toggleGroup',
     placeholder: '',
     type: 'toggleGroup',
-    schema: v.array(v.string('Please select an option.')),
+    schema: ToggleGroupSchema,
   },
 }
 
