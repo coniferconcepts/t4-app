@@ -13,18 +13,21 @@ import Form, { InputConfig } from 'app/components/form/form'
 type PartialCar = Partial<Car>
 
 const inputsConfig: InputConfig[] = [
-  { name: 'make', preset: 'string', labelText: 'Make', placeholder: 'Make', optional: true },
+  { name: 'make', preset: 'string', labelText: 'Make', placeholder: 'Make' },
   { name: 'model', preset: 'string', labelText: 'Model', placeholder: 'Model' },
   { name: 'year', preset: 'number', labelText: 'Year', placeholder: 'Year' },
   { name: 'color', preset: 'string', labelText: 'Color', placeholder: 'Color' },
   { name: 'price', preset: 'number', labelText: 'Price', placeholder: 'Price' },
   { name: 'mileage', preset: 'number', labelText: 'Mileage', placeholder: 'Mileage' },
-  { name: 'fuelType', preset: 'string', labelText: 'Fuel Type', placeholder: 'Fuel Type' },
+  { name: 'fuelType', preset: 'radioGroup', labelText: 'Fuel Type', options: [{ id: 1, value: 'Gasoline' }, { id: 2, value: 'Diesel' }, { id: 3, value: 'Electric' }] },
   {
     name: 'transmission',
-    preset: 'string',
+    preset: 'radioGroup',
     labelText: 'Transmission',
-    placeholder: 'Transmission',
+    options: [
+      { id: 1, value: 'Automatic' },
+      { id: 2, value: 'Manual' },
+    ]
   },
   { name: 'accepted', preset: 'switch', labelText: 'Accepted' },
   {
@@ -35,7 +38,7 @@ const inputsConfig: InputConfig[] = [
     options: [
       { id: 1, value: 'SUV' },
       { id: 2, value: 'Sedan' },
-    ],
+    ], optional: true
   },
   {
     name: 'driveType',
@@ -45,7 +48,8 @@ const inputsConfig: InputConfig[] = [
       { id: 1, value: 'AWD' },
       { id: 2, value: 'FWD' },
       { id: 3, value: 'RWD' },
-    ],
+    ]
+    , optional: true
   },
   {
     name: 'features',
@@ -55,7 +59,7 @@ const inputsConfig: InputConfig[] = [
       { id: 1, value: 'Sunroof' },
       { id: 2, value: 'Leather Seats' },
       { id: 3, value: 'Bluetooth' },
-    ],
+    ], optional: true
   },
   {
     name: 'description',

@@ -51,7 +51,7 @@ export type TextAreaInput = v.InferInput<typeof TextAreaSchema>
 export type TextAreaOutput = v.InferOutput<typeof TextAreaSchema>
 
 const SliderSchema = v.pipe(
-  v.number('Please enter a valid number.'),
+  v.number('Please provide a response.'),
   v.minValue(0, 'Your number must be greater than 0.'),
   v.maxValue(100, 'Your number must be less than or equal to 100.')
 )

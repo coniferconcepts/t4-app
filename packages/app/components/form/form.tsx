@@ -18,7 +18,7 @@ interface CustomInputConfig {
   size?: string
   defaultChecked?: boolean
   style?: object
-  optional?: boolean; // Indicate if the input is optional
+  optional?: boolean // Indicate if the input is optional
 }
 
 interface PresetInputConfig {
@@ -31,7 +31,7 @@ interface PresetInputConfig {
   size?: string
   defaultChecked?: boolean
   style?: object
-  optional?: boolean; // Indicate if the input is optional
+  optional?: boolean // Indicate if the input is optional
 }
 
 type InputType =
@@ -182,10 +182,10 @@ const Form = ({
           }
           : inputConfig
 
-      const schema = inputConfig.optional ? v.optional(config.schema) : config.schema;
+      const schema = inputConfig.optional ? v.optional(config.schema) : config.schema
 
-      const result = safeParse(schema, values$[name].get());
-      errors$[name].set(result.success ? '' : result.issues[0]?.message || 'Validation failed');
+      const result = safeParse(schema, values$[name].get())
+      errors$[name].set(result.success ? '' : result.issues[0]?.message || 'Validation failed')
     }
   }
 
