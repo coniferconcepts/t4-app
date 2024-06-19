@@ -1,6 +1,6 @@
 import { observer } from '@legendapp/state/react'
 import { observable } from '@legendapp/state'
-import { Button, H1, H2, Paragraph, YStack } from '@t4/ui'
+import { Button, H1, H2, Paragraph, XStack, YStack } from '@t4/ui'
 import { cars$ } from 'app/stores/carStore'
 import React from 'react'
 import { For } from '@legendapp/state/react'
@@ -179,6 +179,7 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
         submitTrigger$={submitTrigger$}
       //showSubmit={false}
       //autoSubmit={false}
+
       />
       {/* <Button onPress={handleCustomSubmit}>Custom Submit</Button> */}
       <H2 onPress={updateCar}>Update Car</H2>

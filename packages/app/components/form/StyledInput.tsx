@@ -149,11 +149,12 @@ const StyledInput = observer(
                 }}
                 {...style}
                 {...rest}
+
               >
                 <Slider.Track>
                   <Slider.TrackActive />
                 </Slider.Track>
-                <Slider.Thumb index={0} circular elevate style={{ backgroundColor: '#8535AF' }} />
+                <Slider.Thumb index={0} circular style={{ backgroundColor: '#8535AF' }} size={25} focusStyle={{ backgroundColor: '#8535AF' }} />
               </Slider>
               <Text marginTop={10} alignSelf='center'>
                 {currentValue}
