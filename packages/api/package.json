@@ -25,7 +25,7 @@
     "arctic": "1.9.0",
     "drizzle-orm": "^0.30.10",
     "drizzle-valibot": "^0.2.0",
-    "hono": "^4.4.6",
+    "hono": "^4.4.7",
     "lodash": "^4.17.21",
     "lucia": "3.2.0",
     "miniflare": "3.20240512.0",
@@ -37,7 +37,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240614.0",
     "@types/lodash": "^4.17.5",
-    "bun-types": "^1.1.13",
+    "bun-types": "^1.1.14",
     "drizzle-kit": "^0.21.4",
     "typescript": "^5.4.5",
     "wrangler": "^3.61.0"

@@ -11,7 +11,10 @@ import {
   RadioGroup,
   ToggleGroup,
   TextArea,
-  useTheme
+  useTheme,
+  styled,
+  Sheet,
+  Adapt
 } from 'tamagui'
 import { observer } from '@legendapp/state/react'
 import { ChevronDown, Check } from '@tamagui/lucide-icons'
@@ -44,7 +47,6 @@ const StyledInput = observer(
     placeholder,
     validateOnBlur,
     inputStyle,
-    inputTextStyle,
     inputLabelStyle,
     inputErrorStyle,
     labelText,
@@ -59,23 +61,15 @@ const StyledInput = observer(
     style,
     ...rest
   }: StyledInputProps) => {
-
     const tamaguiTheme = useTheme()
 
     const defaultInputStyle = {
-      borderColor: tamaguiTheme.purple4Light.val,
-      //padding: 15,
+      // borderColor: tamaguiTheme.purple4Light.val,
       padding: 10,
       borderWidth: 1,
-      //borderColor: 'gray',
       borderRadius: 5,
       outlineWidth: 0,
       outlineStyle: 'none',
-      //backgroundColor: 'white',
-    }
-
-    const defaultInputTextStyle = {
-      //color: 'red',
     }
 
     const defaultInputLabelStyle = {
@@ -106,15 +100,17 @@ const StyledInput = observer(
               }}
               {...rest}
             >
-              <Select.Trigger iconAfter={ChevronDown} style={inputStyle}>
+
+              <Select.Trigger width={250} iconAfter={ChevronDown} style={inputStyle}>
                 <Select.Value placeholder={placeholder} />
               </Select.Trigger>
-              <Select.Content>
-                <Select.Viewport>
+              <Select.Content zIndex={200000}>
+                <Select.Viewport minWidth={200}>
+
                   <Select.Group>
                     {options?.map((option, index) => (
                       <Select.Item index={index} key={option.id} value={option.value}>
-                        <Text>{option.value}</Text>
+                        <Select.ItemText>{option.value}</Select.ItemText>
                         <Select.ItemIndicator>
                           <Check size={16} />
                         </Select.ItemIndicator>
@@ -123,12 +119,14 @@ const StyledInput = observer(
                   </Select.Group>
                 </Select.Viewport>
               </Select.Content>
+
             </Select>
           )
         case 'switch':
           return (
             <XStack alignItems='center' gap='$4'>
               <Switch
+                //style={{ backgroundColor: #3B008C }}
                 size='$4'
                 onCheckedChange={(value) => {
                   value$.set(value)
@@ -136,7 +134,7 @@ const StyledInput = observer(
                 }}
                 {...rest}
               >
-                <Switch.Thumb animation='bouncy' />
+                <Switch.Thumb animation='bouncy' style={{ backgroundColor: '#8535AF' }} />
               </Switch>
             </XStack>
           )
@@ -155,7 +153,7 @@ const StyledInput = observer(
                 <Slider.Track>
                   <Slider.TrackActive />
                 </Slider.Track>
-                <Slider.Thumb index={0} circular elevate />
+                <Slider.Thumb index={0} circular elevate style={{ backgroundColor: '#8535AF' }} />
               </Slider>
               <Text marginTop={10} alignSelf='center'>
                 {currentValue}
@@ -170,15 +168,17 @@ const StyledInput = observer(
                 value$.set(value)
                 onChange?.()
               }}
+              gap='$2'
               {...rest}
             >
               {options?.map((option, i) => (
                 <XStack key={option.id} alignItems='center' gap='$2'>
-                  <RadioGroup.Item value={option.value}>
+                  <RadioGroup.Item value={option.value} >
                     <RadioGroup.Indicator />
                   </RadioGroup.Item>
-                  <Text>{option.value}</Text>
+                  <Text >{option.value}</Text>
                 </XStack>
+
               ))}
             </RadioGroup>
           )
@@ -192,13 +192,14 @@ const StyledInput = observer(
                 onChange?.()
               }}
               {...rest}
+
             >
               {options?.map((option, i) => (
                 <ToggleGroup.Item key={option.id} value={option.value}>
                   <Text>{option.value}</Text>
                 </ToggleGroup.Item>
               ))}
-            </ToggleGroup>
+            </ToggleGroup >
           )
         case 'textArea':
           return (
@@ -223,8 +224,11 @@ const StyledInput = observer(
               secureTextEntry={type?.includes('password')}
               onBlur={handleBlur}
               onFocus={onFocus}
-              style={{ ...defaultInputStyle, ...inputStyle }}
+              {...defaultInputStyle}
+              {...inputStyle}
+              focusStyle={{ borderColor: '#8535AF' }}
               {...rest}
+
             />
           )
       }
@@ -232,9 +236,13 @@ const StyledInput = observer(
 
     return (
       <YStack>
-        {labelText && <Text style={inputLabelStyle}>{labelText}</Text>}
+        {labelText && <Text {...defaultInputLabelStyle} {...inputLabelStyle}>{labelText}</Text>}
         {renderInputByType()}
-        {error$.get() && <Text {...defaultInputErrorStyle} {...inputErrorStyle} >{error$.get()}</Text>}
+        {error$.get() && (
+          <Text {...defaultInputErrorStyle} {...inputErrorStyle}>
+            {error$.get()}
+          </Text>
+        )}
       </YStack>
     )
   }

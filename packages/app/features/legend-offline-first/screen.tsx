@@ -39,55 +39,56 @@ const inputsConfig: InputConfig[] = [
       { id: 2, value: 'Manual' },
     ],
   },
-  // { name: 'accepted', preset: 'switch', labelText: 'Accepted' },
-  // {
-  //   name: 'carType',
-  //   preset: 'select',
-  //   labelText: 'Car Type',
-  //   placeholder: 'Select Car Type',
-  //   options: [
-  //     { id: 1, value: 'SUV' },
-  //     { id: 2, value: 'Sedan' },
-  //   ], optional: true
-  // },
-  // {
-  //   name: 'driveType',
-  //   preset: 'radioGroup',
-  //   labelText: 'Drive Type',
-  //   options: [
-  //     { id: 1, value: 'AWD' },
-  //     { id: 2, value: 'FWD' },
-  //     { id: 3, value: 'RWD' },
-  //   ]
-  //   , optional: true
-  // },
-  // {
-  //   name: 'features',
-  //   preset: 'toggleGroup',
-  //   labelText: 'Features',
-  //   options: [
-  //     { id: 1, value: 'Sunroof' },
-  //     { id: 2, value: 'Leather Seats' },
-  //     { id: 3, value: 'Bluetooth' },
-  //   ], optional: true
-  // },
-  // {
-  //   name: 'description',
-  //   preset: 'textArea',
-  //   labelText: 'Description',
-  //   placeholder: 'Enter description',
-  //   style: { minHeight: 400 },
-  //   optional: true,
-  // },
-  // { name: 'rating', preset: 'slider', labelText: 'Rating', style: { max: 100, step: 1 } },
+  { name: 'accepted', preset: 'switch', labelText: 'Accepted' },
+  {
+    name: 'carType',
+    preset: 'select',
+    labelText: 'Car Type',
+    placeholder: 'Select Car Type',
+    options: [
+      { id: 1, value: 'SUV' },
+      { id: 2, value: 'Sedan' },
+    ], optional: true
+  },
+  {
+    name: 'driveType',
+    preset: 'radioGroup',
+    labelText: 'Drive Type',
+    options: [
+      { id: 1, value: 'AWD' },
+      { id: 2, value: 'FWD' },
+      { id: 3, value: 'RWD' },
+    ]
+    , optional: true
+  },
+  {
+    name: 'features',
+    preset: 'toggleGroup',
+    labelText: 'Features',
+    options: [
+      { id: 1, value: 'Sunroof' },
+      { id: 2, value: 'Leather Seats' },
+      { id: 3, value: 'Bluetooth' },
+    ], optional: true
+  },
+  {
+    name: 'description',
+    preset: 'textArea',
+    labelText: 'Description',
+    placeholder: 'Enter description',
+    style: { minHeight: 400 },
+    optional: true,
+  },
+  { name: 'rating', preset: 'slider', labelText: 'Rating', style: { max: 100, step: 1 } },
 ]
 
-const formContainerStyle = { padding: 20, backgroundColor: '#f0f0f0' }
+const formContainerStyle = {
+  padding: 20, backgroundColor: '#f0f0f0'
+}
 const inputContainerStyle = { marginBottom: 20 }
-const inputStyle = { borderColor: 'green', padding: 15 }
-const inputTextStyle = { color: 'red' }
+const inputStyle = { borderColor: 'green', borderWidth: 3, padding: 15, color: 'purple' }
 const inputLabelStyle = { color: 'blue' }
-//const inputErrorStyle = { color: 'orange' }
+const inputErrorStyle = { color: 'orange' }
 
 export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
   const carsList = cars$.get()
@@ -170,12 +171,11 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
       <Form
         inputsConfig={inputsConfig}
         onSubmit={handleFormSubmit}
-        formContainerStyle={formContainerStyle}
-        inputContainerStyle={inputContainerStyle}
-        inputStyle={inputStyle}
-        inputTextStyle={inputTextStyle}
-        inputLabelStyle={inputLabelStyle}
-        //inputErrorStyle={inputErrorStyle}
+        // formContainerStyle={formContainerStyle}
+        // inputContainerStyle={inputContainerStyle}
+        // inputStyle={inputStyle}
+        // inputLabelStyle={inputLabelStyle}
+        // inputErrorStyle={inputErrorStyle}
         submitTrigger$={submitTrigger$}
       //showSubmit={false}
       //autoSubmit={false}

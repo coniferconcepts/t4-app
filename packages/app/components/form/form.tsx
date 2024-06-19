@@ -1,5 +1,5 @@
 import React from 'react'
-import { YStack, Text, Button, InputProps, TextProps, StackProps } from 'tamagui'
+import { YStack, Text, Button, InputProps, TextProps, StackProps, useTheme, YStackProps } from 'tamagui'
 import { observable, computed, batch, when } from '@legendapp/state'
 import { useObservable } from '@legendapp/state/react'
 import { AnySchema, safeParse } from 'valibot'
@@ -109,10 +109,9 @@ export type InputConfig =
 interface FormProps {
   inputsConfig: (PresetInputConfig | CustomInputConfig)[]
   onSubmit: (formData: Record<string, any>) => void
-  formContainerStyle?: StackProps['style']
+  formContainerStyle?: YStackProps['style']
   inputContainerStyle?: InputProps['style']
   inputStyle?: InputProps['style']
-  inputTextStyle?: TextProps['style']
   inputLabelStyle?: TextProps['style']
   inputErrorStyle?: TextProps['style']
   customButton?: JSX.Element | null
@@ -127,7 +126,6 @@ const Form = ({
   formContainerStyle,
   inputContainerStyle,
   inputStyle,
-  inputTextStyle,
   inputLabelStyle,
   inputErrorStyle,
   customButton,
@@ -135,6 +133,8 @@ const Form = ({
   showSubmit = true,
   autoSubmit = false,
 }: FormProps) => {
+  const tamaguiTheme = useTheme()
+
   const values$ = useObservable({})
   const errors$ = useObservable({})
   const focusStates$ = useObservable({})
@@ -143,7 +143,9 @@ const Form = ({
   const formError$ = useObservable('')
 
   const defaultFormContainerStyle: StackProps['style'] = {
-    padding: 20, backgroundColor: '#f0f0f0'
+    padding: 15,
+    gap: 15,
+    backgroundColor: tamaguiTheme.background.val,
   }
 
   // biome-ignore lint/complexity/noForEach: <explanation>
@@ -405,7 +407,6 @@ const Form = ({
                 return error
               }}
               inputStyle={inputStyle}
-              inputTextStyle={inputTextStyle}
               inputLabelStyle={inputLabelStyle}
               inputErrorStyle={inputErrorStyle}
               labelText={config.labelText}
