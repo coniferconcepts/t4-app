@@ -53,7 +53,8 @@ const inputsConfig: InputConfig[] = [
     preset: 'toggleGroup',
     labelText: 'Features',
     options: ['Sunroof', 'Leather Seats', 'Bluetooth'].map((value, id) => ({ id, value })),
-    optional: true,
+    //optional: true,
+    multiple: true,
   },
   {
     name: 'description',

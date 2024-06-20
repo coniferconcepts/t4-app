@@ -18,7 +18,8 @@ interface CustomInputConfig {
   size?: string
   defaultChecked?: boolean
   style?: object
-  optional?: boolean // Indicate if the input is optional
+  optional?: boolean
+  multiple?: boolean
 }
 
 interface PresetInputConfig {
@@ -31,7 +32,8 @@ interface PresetInputConfig {
   size?: string
   defaultChecked?: boolean
   style?: object
-  optional?: boolean // Indicate if the input is optional
+  optional?: boolean
+  multiple?: boolean
 }
 
 type InputType =
@@ -82,6 +84,7 @@ interface RadioGroupInput extends InputBase {
 interface ToggleGroupInput extends InputBase {
   preset: 'toggleGroup'
   options: { id: number; value: string }[]
+  multiple?: boolean
 }
 
 interface TextAreaInput extends InputBase {
@@ -148,22 +151,26 @@ const Form = ({
     backgroundColor: tamaguiTheme.background.val,
   }
 
-  // biome-ignore lint/complexity/noForEach: <explanation>
+  // Utility to get full config
+  const getConfig = (input) =>
+    'preset' in input
+      ? {
+        ...getInputPreset(input.preset),
+        name: input.name,
+        labelText: input.labelText,
+        placeholder: input.placeholder,
+        options: input.options,
+        id: input.name,
+        size: input.size,
+        defaultChecked: input.defaultChecked,
+        style: input.style,
+        optional: input.optional,
+        multiple: input.multiple,
+      }
+      : input
+
   inputsConfig.forEach((input) => {
-    const config =
-      'preset' in input
-        ? {
-          ...getInputPreset(input.preset),
-          name: input.name,
-          labelText: input.labelText,
-          placeholder: input.placeholder,
-          options: input.options,
-          id: input.name,
-          size: input.size,
-          defaultChecked: input.defaultChecked,
-          style: input.style,
-        }
-        : input
+    const config = getConfig(input)
     if (!values$[config.name]) values$[config.name] = useObservable('')
     if (!errors$[config.name]) errors$[config.name] = useObservable('')
     if (!focusStates$[config.name]) focusStates$[config.name] = useObservable(false)
@@ -172,74 +179,40 @@ const Form = ({
 
   const validateInput = (name: string) => {
     const inputConfig = inputsConfig.find((input) => input.name === name)
-    console.log('validateInput', name, inputConfig)
     if (inputConfig) {
-      const config =
-        'preset' in inputConfig
-          ? {
-            ...getInputPreset(inputConfig.preset),
-            name: inputConfig.name,
-            labelText: inputConfig.labelText,
-            placeholder: inputConfig.placeholder,
-            options: inputConfig.options,
-            id: inputConfig.name,
-            size: inputConfig.size,
-            defaultChecked: inputConfig.defaultChecked,
-            style: inputConfig.style,
-          }
-          : inputConfig
+      const config = getConfig(inputConfig)
+      let schema;
 
-      const schema = inputConfig.optional ? v.optional(config.schema) : config.schema
+      if (config.type === 'toggleGroup') {
+        schema = config.multiple
+          ? config.optional ? v.optional(config.schema['multiple']) : config.schema['multiple']
+          : config.optional ? v.optional(config.schema['single']) : config.schema['single']
+      } else {
+        schema = config.optional ? v.optional(config.schema) : config.schema
+      }
 
       const result = safeParse(schema, values$[name].get())
       errors$[name].set(result.success ? '' : result.issues[0]?.message || 'Validation failed')
     }
   }
 
+  const isFieldValid = (name: string) => {
+    validateInput(name)
+    return !errors$[name].get()
+  }
+
   const updateFormError = () => {
-    const hasErrors = inputsConfig.some((input) => {
-      const config =
-        'preset' in input
-          ? {
-            ...getInputPreset(input.preset),
-            name: input.name,
-            labelText: input.labelText,
-            placeholder: input.placeholder,
-            options: input.options,
-            id: input.name,
-            size: input.size,
-            defaultChecked: input.defaultChecked,
-            style: input.style,
-          }
-          : input
-      return errors$[config.name].get()
-    })
+    const hasErrors = inputsConfig.some((input) => errors$[getConfig(input).name].get())
     formError$.set(hasErrors ? 'Please check the form for errors.' : '')
-    console.log(`Form errors updated, hasErrors: ${hasErrors}`)
   }
 
   const handleSubmit = () => {
-    console.log('Handling form submission...')
+    console.log('starting handleSubmit')
     didSubmit$.set(true)
-
     let formIsValid = true
-    // biome-ignore lint/complexity/noForEach: <explanation>
+
     inputsConfig.forEach((input) => {
-      const config =
-        'preset' in input
-          ? {
-            ...getInputPreset(input.preset),
-            name: input.name,
-            labelText: input.labelText,
-            placeholder: input.placeholder,
-            options: input.options,
-            id: input.name,
-            size: input.size,
-            defaultChecked: input.defaultChecked,
-            style: input.style,
-            optional: input.optional,
-          }
-          : input
+      const config = getConfig(input)
       validateInput(config.name)
       if (errors$[config.name].get()) {
         formIsValid = false
@@ -247,23 +220,8 @@ const Form = ({
     })
 
     if (formIsValid) {
-      console.log('Form is valid. Preparing form data...')
       const formData = inputsConfig.reduce((acc, input) => {
-        const config =
-          'preset' in input
-            ? {
-              ...getInputPreset(input.preset),
-              name: input.name,
-              labelText: input.labelText,
-              placeholder: input.placeholder,
-              options: input.options,
-              id: input.name,
-              size: input.size,
-              defaultChecked: input.defaultChecked,
-              style: input.style,
-              optional: input.optional,
-            }
-            : input
+        const config = getConfig(input)
         let value = values$[config.name].get()
         if (config.type === 'number' || config.type === 'slider') {
           value = Number(value)
@@ -271,126 +229,54 @@ const Form = ({
         acc[config.name] = value
         return acc
       }, {})
-      console.log('Form data prepared:', formData)
       onSubmit(formData)
-      didSubmit$.set(false)
     } else {
-      console.log('Form is invalid. Updating form errors...')
       updateFormError()
-      didSubmit$.set(false)
     }
+    didSubmit$.set(false)
     submitTrigger$.set(false)
   }
 
   when(() => submitTrigger$.get(), handleSubmit)
 
   const allFieldsValidAndTouched$ = computed(() => {
-    const result = inputsConfig.every((input) => {
-      const config =
-        'preset' in input
-          ? {
-            ...getInputPreset(input.preset),
-            name: input.name,
-            labelText: input.labelText,
-            placeholder: input.placeholder,
-            options: input.options,
-            id: input.name,
-            size: input.size,
-            defaultChecked: input.defaultChecked,
-            style: input.style,
-          }
-          : input
-      const validResult = safeParse(config.schema, values$[config.name].get())
-      const touched = touched$[config.name].get()
-      console.log(`Field ${config.name}: valid = ${validResult.success}, touched = ${touched}`)
-      return touched && validResult.success
+    return inputsConfig.every((input) => {
+      const config = getConfig(input)
+      return touched$[config.name].get() && isFieldValid(config.name)
     })
-    console.log(`All fields valid and touched: ${result}`)
-    return result
   })
 
   const anyFieldHasFocus$ = computed(() => {
-    const result = inputsConfig.some((input) => {
-      const config =
-        'preset' in input
-          ? {
-            ...getInputPreset(input.preset),
-            name: input.name,
-            labelText: input.labelText,
-            placeholder: input.placeholder,
-            options: input.options,
-            id: input.name,
-            size: input.size,
-            defaultChecked: input.defaultChecked,
-            style: input.style,
-          }
-          : input
-      const hasFocus = focusStates$[config.name].get()
-      console.log(`Field ${config.name} has focus: ${hasFocus}`)
-      return hasFocus
-    })
-    console.log(`Any field has focus: ${result}`)
-    return result
+    return inputsConfig.some((input) => focusStates$[getConfig(input).name].get())
   })
 
-  when(() => {
-    console.log('Auto-submit check:', {
-      autoSubmit,
-      allFieldsValidAndTouched: allFieldsValidAndTouched$.get(),
-      anyFieldHasFocus: anyFieldHasFocus$.get(),
-    })
-    return autoSubmit && allFieldsValidAndTouched$.get() && !anyFieldHasFocus$.get()
-  }, handleSubmit)
+  when(() => autoSubmit && allFieldsValidAndTouched$.get() && !anyFieldHasFocus$.get(), handleSubmit)
 
   const handleBlur = (name: string) => {
     validateInput(name)
     touched$[name].set(true)
     updateFormError()
-    if (autoSubmit) {
-      console.log('auto submit checks for touched fields and no focus')
-      console.log('allFieldsValidAndTouched$:', allFieldsValidAndTouched$.get())
-      console.log('anyFieldHasFocus$:', anyFieldHasFocus$.get())
-      if (allFieldsValidAndTouched$.get() && !anyFieldHasFocus$.get()) {
-        handleSubmit()
-      }
+    if (autoSubmit && allFieldsValidAndTouched$.get() && !anyFieldHasFocus$.get()) {
+      handleSubmit()
     }
   }
 
   const handleChange = (name: string) => {
-    console.log('Handling change for field:', name)
     validateInput(name)
     touched$[name].set(true)
     updateFormError()
-    if (autoSubmit) {
-      console.log('auto submit checks for touched fields and no focus')
-      console.log('allFieldsValidAndTouched$:', allFieldsValidAndTouched$.get())
-      console.log('anyFieldHasFocus$:', anyFieldHasFocus$.get())
-      if (allFieldsValidAndTouched$.get() && !anyFieldHasFocus$.get()) {
-        handleSubmit()
-      }
+    if (autoSubmit && allFieldsValidAndTouched$.get() && !anyFieldHasFocus$.get()) {
+      handleSubmit()
     }
   }
 
   return (
     <YStack {...defaultFormContainerStyle} {...formContainerStyle}>
       {formError$.get() && <Text>{formError$.get()}</Text>}
-      {inputsConfig.map((input, index) => {
-        const config =
-          'preset' in input
-            ? {
-              ...getInputPreset(input.preset),
-              name: input.name,
-              labelText: input.labelText,
-              placeholder: input.placeholder,
-              options: input.options,
-              id: input.name,
-              size: input.size,
-              defaultChecked: input.defaultChecked,
-              style: input.style,
-            }
-            : input
+      {inputsConfig.map((input) => {
+        const config = getConfig(input)
         return (
-          <YStack key={input.name} style={inputContainerStyle}>
+          <YStack key={config.name} style={inputContainerStyle}>
             <StyledInput
               key={config.name}
               value$={values$[config.name]}
@@ -398,11 +284,8 @@ const Form = ({
               placeholder={config.placeholder}
               type={config.type}
               validateOnBlur={(value) => {
-                const result = safeParse(config.schema, value)
-                const error = result.success
-                  ? null
-                  : result.issues[0]?.message || 'Validation failed'
-                errors$[config.name].set(error || '')
+                validateInput(config.name)
+                const error = errors$[config.name].get() || ''
                 updateFormError()
                 return error
               }}
@@ -424,6 +307,7 @@ const Form = ({
               size={config.size}
               defaultChecked={config.defaultChecked}
               style={config.style}
+              multiple={config.multiple}
             />
           </YStack>
         )

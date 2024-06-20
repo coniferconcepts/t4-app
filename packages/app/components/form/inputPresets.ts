@@ -61,11 +61,11 @@ export type SliderOutput = v.InferOutput<typeof SliderSchema>
 const SwitchSchema = v.pipe(
   v.any(),
   v.transform((input) => {
-    console.log({ input })
+    console.log('switchSchema', { input })
     if (!input || input === undefined) {
       return Boolean(false)
     }
-    Boolean(input)
+    return Boolean(input)
   }),
   v.boolean('Please enter a valid boolean.')
 )
@@ -142,13 +142,13 @@ export const inputPresets = {
     name: 'radioGroup',
     placeholder: '',
     type: 'radioGroup',
-    schema: v.string('Please select an option.'),
+    schema: SelectSchema,
   },
   toggleGroup: {
     name: 'toggleGroup',
     placeholder: '',
     type: 'toggleGroup',
-    schema: ToggleGroupSchema,
+    schema: { single: SelectSchema, multiple: ToggleGroupSchema },
   },
 }
 

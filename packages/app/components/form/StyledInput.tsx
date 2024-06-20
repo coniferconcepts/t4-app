@@ -38,6 +38,7 @@ interface StyledInputProps {
   size?: string
   defaultChecked?: boolean
   style?: object
+  multiple?: boolean
 }
 
 const StyledInput = observer(
@@ -59,6 +60,7 @@ const StyledInput = observer(
     size,
     defaultChecked,
     style,
+    multiple,
     ...rest
   }: StyledInputProps) => {
     const tamaguiTheme = useTheme()
@@ -185,9 +187,10 @@ const StyledInput = observer(
             </RadioGroup>
           )
         case 'toggleGroup':
+          console.log('toggleGroup', { multiple })
           return (
             <ToggleGroup
-              type='multiple'
+              type={multiple ? 'multiple' : 'single'}
               value={currentValue}
               onValueChange={(value) => {
                 value$.set(value)
