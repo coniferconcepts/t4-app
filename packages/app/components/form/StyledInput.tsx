@@ -14,7 +14,7 @@ import {
   useTheme,
   styled,
   Sheet,
-  Adapt
+  Adapt,
 } from 'tamagui'
 import { observer } from '@legendapp/state/react'
 import { ChevronDown, Check } from '@tamagui/lucide-icons'
@@ -100,13 +100,11 @@ const StyledInput = observer(
               }}
               {...rest}
             >
-
               <Select.Trigger width={250} iconAfter={ChevronDown} style={inputStyle}>
                 <Select.Value placeholder={placeholder} />
               </Select.Trigger>
               <Select.Content zIndex={200000}>
                 <Select.Viewport minWidth={200}>
-
                   <Select.Group>
                     {options?.map((option, index) => (
                       <Select.Item index={index} key={option.id} value={option.value}>
@@ -119,7 +117,6 @@ const StyledInput = observer(
                   </Select.Group>
                 </Select.Viewport>
               </Select.Content>
-
             </Select>
           )
         case 'switch':
@@ -149,12 +146,17 @@ const StyledInput = observer(
                 }}
                 {...style}
                 {...rest}
-
               >
                 <Slider.Track>
                   <Slider.TrackActive />
                 </Slider.Track>
-                <Slider.Thumb index={0} circular style={{ backgroundColor: '#8535AF' }} size={25} focusStyle={{ backgroundColor: '#8535AF' }} />
+                <Slider.Thumb
+                  index={0}
+                  circular
+                  style={{ backgroundColor: '#8535AF' }}
+                  size={25}
+                  focusStyle={{ backgroundColor: '#8535AF' }}
+                />
               </Slider>
               <Text marginTop={10} alignSelf='center'>
                 {currentValue}
@@ -174,12 +176,11 @@ const StyledInput = observer(
             >
               {options?.map((option, i) => (
                 <XStack key={option.id} alignItems='center' gap='$2'>
-                  <RadioGroup.Item value={option.value} >
+                  <RadioGroup.Item value={option.value}>
                     <RadioGroup.Indicator />
                   </RadioGroup.Item>
-                  <Text >{option.value}</Text>
+                  <Text>{option.value}</Text>
                 </XStack>
-
               ))}
             </RadioGroup>
           )
@@ -193,14 +194,13 @@ const StyledInput = observer(
                 onChange?.()
               }}
               {...rest}
-
             >
               {options?.map((option, i) => (
                 <ToggleGroup.Item key={option.id} value={option.value}>
                   <Text>{option.value}</Text>
                 </ToggleGroup.Item>
               ))}
-            </ToggleGroup >
+            </ToggleGroup>
           )
         case 'textArea':
           return (
@@ -229,7 +229,6 @@ const StyledInput = observer(
               {...inputStyle}
               focusStyle={{ borderColor: '#8535AF' }}
               {...rest}
-
             />
           )
       }
@@ -237,7 +236,11 @@ const StyledInput = observer(
 
     return (
       <YStack>
-        {labelText && <Text {...defaultInputLabelStyle} {...inputLabelStyle}>{labelText}</Text>}
+        {labelText && (
+          <Text {...defaultInputLabelStyle} {...inputLabelStyle}>
+            {labelText}
+          </Text>
+        )}
         {renderInputByType()}
         {error$.get() && (
           <Text {...defaultInputErrorStyle} {...inputErrorStyle}>

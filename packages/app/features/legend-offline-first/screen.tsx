@@ -24,20 +24,13 @@ const inputsConfig: InputConfig[] = [
     name: 'fuelType',
     preset: 'radioGroup',
     labelText: 'Fuel Type',
-    options: [
-      { id: 1, value: 'Gasoline' },
-      { id: 2, value: 'Diesel' },
-      { id: 3, value: 'Electric' },
-    ],
+    options: ['Gasoline', 'Diesel', 'Electric'].map((value, id) => ({ id, value })),
   },
   {
     name: 'transmission',
     preset: 'radioGroup',
     labelText: 'Transmission',
-    options: [
-      { id: 1, value: 'Automatic' },
-      { id: 2, value: 'Manual' },
-    ],
+    options: ['Automatic', 'Manual'].map((value, id) => ({ id, value })),
   },
   { name: 'accepted', preset: 'switch', labelText: 'Accepted' },
   {
@@ -45,31 +38,22 @@ const inputsConfig: InputConfig[] = [
     preset: 'select',
     labelText: 'Car Type',
     placeholder: 'Select Car Type',
-    options: [
-      { id: 1, value: 'SUV' },
-      { id: 2, value: 'Sedan' },
-    ], optional: true
+    options: ['SUV', 'Sedan'].map((value, id) => ({ id, value })),
+    optional: true,
   },
   {
     name: 'driveType',
     preset: 'radioGroup',
     labelText: 'Drive Type',
-    options: [
-      { id: 1, value: 'AWD' },
-      { id: 2, value: 'FWD' },
-      { id: 3, value: 'RWD' },
-    ]
-    , optional: true
+    options: ['AWD', 'FWD', 'RWD'].map((value, id) => ({ id, value })),
+    optional: true,
   },
   {
     name: 'features',
     preset: 'toggleGroup',
     labelText: 'Features',
-    options: [
-      { id: 1, value: 'Sunroof' },
-      { id: 2, value: 'Leather Seats' },
-      { id: 3, value: 'Bluetooth' },
-    ], optional: true
+    options: ['Sunroof', 'Leather Seats', 'Bluetooth'].map((value, id) => ({ id, value })),
+    optional: true,
   },
   {
     name: 'description',
@@ -83,7 +67,8 @@ const inputsConfig: InputConfig[] = [
 ]
 
 const formContainerStyle = {
-  padding: 20, backgroundColor: '#f0f0f0'
+  padding: 20,
+  backgroundColor: '#f0f0f0',
 }
 const inputContainerStyle = { marginBottom: 20 }
 const inputStyle = { borderColor: 'green', borderWidth: 3, padding: 15, color: 'purple' }
@@ -179,7 +164,6 @@ export const LegendOfflineFirstScreen = observer((): React.ReactNode => {
         submitTrigger$={submitTrigger$}
       //showSubmit={false}
       //autoSubmit={false}
-
       />
       {/* <Button onPress={handleCustomSubmit}>Custom Submit</Button> */}
       <H2 onPress={updateCar}>Update Car</H2>
