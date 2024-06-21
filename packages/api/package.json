@@ -35,11 +35,11 @@
     "valibot": "^0.31.1"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240614.0",
+    "@cloudflare/workers-types": "^4.20240620.0",
     "@types/lodash": "^4.17.5",
     "bun-types": "^1.1.15",
     "drizzle-kit": "^0.21.4",
-    "typescript": "^5.4.5",
+    "typescript": "^5.5.2",
     "wrangler": "^3.61.0"
   }
 }

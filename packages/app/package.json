@@ -10,7 +10,7 @@
     "clean": "rm -rf node_modules"
   },
   "dependencies": {
-    "@legendapp/state": "^3.0.0-alpha.15",
+    "@legendapp/state": "^3.0.0-alpha.16",
     "@paralleldrive/cuid2": "^2.2.2",
     "@react-navigation/native": "^6.1.17",
     "@shopify/flash-list": "^1.6.4",

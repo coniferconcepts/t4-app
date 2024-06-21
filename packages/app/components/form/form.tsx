@@ -1,5 +1,14 @@
 import React from 'react'
-import { YStack, Text, Button, InputProps, TextProps, StackProps, useTheme, YStackProps } from 'tamagui'
+import {
+  YStack,
+  Text,
+  Button,
+  InputProps,
+  TextProps,
+  StackProps,
+  useTheme,
+  YStackProps,
+} from 'tamagui'
 import { observable, computed, batch, when } from '@legendapp/state'
 import { useObservable } from '@legendapp/state/react'
 import { AnySchema, safeParse } from 'valibot'
@@ -155,18 +164,18 @@ const Form = ({
   const getConfig = (input) =>
     'preset' in input
       ? {
-        ...getInputPreset(input.preset),
-        name: input.name,
-        labelText: input.labelText,
-        placeholder: input.placeholder,
-        options: input.options,
-        id: input.name,
-        size: input.size,
-        defaultChecked: input.defaultChecked,
-        style: input.style,
-        optional: input.optional,
-        multiple: input.multiple,
-      }
+          ...getInputPreset(input.preset),
+          name: input.name,
+          labelText: input.labelText,
+          placeholder: input.placeholder,
+          options: input.options,
+          id: input.name,
+          size: input.size,
+          defaultChecked: input.defaultChecked,
+          style: input.style,
+          optional: input.optional,
+          multiple: input.multiple,
+        }
       : input
 
   inputsConfig.forEach((input) => {
@@ -181,12 +190,16 @@ const Form = ({
     const inputConfig = inputsConfig.find((input) => input.name === name)
     if (inputConfig) {
       const config = getConfig(inputConfig)
-      let schema;
+      let schema
 
       if (config.type === 'toggleGroup') {
         schema = config.multiple
-          ? config.optional ? v.optional(config.schema['multiple']) : config.schema['multiple']
-          : config.optional ? v.optional(config.schema['single']) : config.schema['single']
+          ? config.optional
+            ? v.optional(config.schema['multiple'])
+            : config.schema['multiple']
+          : config.optional
+          ? v.optional(config.schema['single'])
+          : config.schema['single']
       } else {
         schema = config.optional ? v.optional(config.schema) : config.schema
       }
@@ -250,7 +263,10 @@ const Form = ({
     return inputsConfig.some((input) => focusStates$[getConfig(input).name].get())
   })
 
-  when(() => autoSubmit && allFieldsValidAndTouched$.get() && !anyFieldHasFocus$.get(), handleSubmit)
+  when(
+    () => autoSubmit && allFieldsValidAndTouched$.get() && !anyFieldHasFocus$.get(),
+    handleSubmit
+  )
 
   const handleBlur = (name: string) => {
     validateInput(name)
